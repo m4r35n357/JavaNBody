@@ -14,7 +14,7 @@ public class Symplectic {
 	
 	double g = 0.05;
 	
-	double ts = 0.005;
+	double ts = 0.001;
 	
 	int np = 0;
 	
@@ -96,22 +96,30 @@ public class Symplectic {
 		// 2-body test
 //		particles.add(new Particle(1.0, 2.0, 0.0, 0.1, 0.1, 0.0, 5.0));
 //		particles.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
-		// 8-body test
-		particles.add(new Particle(0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 100.0));
-		particles.add(new Particle(0.0, 1.5, 0.4, -3.4, 0.0, -0.2, 2.0));
-		particles.add(new Particle(-2.0, 0.0, -0.4, 0.0, -4.0, 0.2, 3.0));
-		particles.add(new Particle(3.0, 0.0, -0.2, 0.0, 4.0, -0.1, 5.0));
-		particles.add(new Particle(0.0, -4.0, 0.1, 4.6, 0.0, 0.1, 4.0));
-		particles.add(new Particle(-4.0, 0.0, -0.1, 0.0, -2.8, -0.2, 3.0));
-		particles.add(new Particle(2.0, 0.0, -0.3, 0.0, 4.4, 0.2, 3.0));
-		particles.add(new Particle(0.0, 3.0, -0.2, -5.0, 0.0, -0.1, 4.0));
+		// 8-body test		
+//		GLOBALS.particles[0] = { colour: GLOBALS.YELLOW, Qx: 0.0, Qy: 0.0, Qz: 0.0, Px: 0.0, Py: 0.0, Pz: 0.0, mass: 100.0, };
+//		GLOBALS.particles[1] = { colour: GLOBALS.WHITE, Qx: 0.0, Qy: 4.5, Qz: 0.4, Px: -0.2, Py: 0.0, Pz: 1.8, mass: 2.0, };
+//		GLOBALS.particles[2] = { colour: GLOBALS.BLUE, Qx: -6.0, Qy: 0.0, Qz: -0.4, Px: 0.0, Py: -0.6, Pz: 1.0, mass: 3.0, };
+//		GLOBALS.particles[3] = { colour: GLOBALS.GREEN, Qx: 3.0, Qy: 0.0, Qz: -0.2, Px: 0.0, Py: 5.8, Pz: -0.2, mass: 5.0, };
+//		GLOBALS.particles[4] = { colour: GLOBALS.DARKGREY, Qx: 0.0, Qy: -4.0, Qz: 0.1, Px: -3.6, Py: 0.0, Pz: 0.2, mass: 4.0, };
+//		GLOBALS.particles[5] = { colour: GLOBALS.RED, Qx: -4.0, Qy: 0.0, Qz: -0.1, Px: 0.0, Py: -0.2, Pz: -2.6, mass: 3.0, };
+//		GLOBALS.particles[6] = { colour: GLOBALS.CYAN, Qx: 8.0, Qy: 0.0, Qz: -0.3, Px: 0.0, Py: 1.2, Pz: -0.2, mass: 3.0, };
+//		GLOBALS.particles[7] = { colour: GLOBALS.PURPLE, Qx: 0.0, Qy: 4.0, Qz: -0.2, Px: -4.8, Py: 0.0, Pz: -0.2, mass: 4.0, };
+		particles.add(new Particle(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0));
+		particles.add(new Particle(0.0, 4.5, 0.4, -0.2, 0.0, 1.8, 2.0));
+		particles.add(new Particle(-6.0, 0.0, -0.4, 0.0, -0.6, 1.0, 3.0));
+		particles.add(new Particle(3.0, 0.0, -0.2, 0.0, 5.8, -0.2, 5.0));
+		particles.add(new Particle(0.0, -4.0, 0.1, -3.6, 0.0, 0.2, 4.0));
+		particles.add(new Particle(-4.0, 0.0, -0.1, 0.0, -0.2, -2.6, 3.0));
+		particles.add(new Particle(8.0, 0.0, -0.3, 0.0, 1.2, -0.2, 3.0));
+		particles.add(new Particle(0.0, 4.0, -0.2, -4.8, 0.0, -0.2, 4.0));
 		Symplectic symplectic = new Symplectic(particles.size());
 		symplectic.setParticles(particles);
 		H0 = symplectic.hamiltonian();
 		Hmin = H0;
 		Hmax = H0;
 		error = 0.0;
-		while (n <= 10000) {
+		while (n <= 300000) {
 			symplectic.stormerVerlet4(Coordinates.POSITION, Coordinates.MOMENTUM);
 			if (debug) {
 				update = false;
@@ -125,10 +133,11 @@ public class Symplectic {
 					error += Math.abs(Hcurrent - H0);
 					update = true;
 				}
-//				if (update && ((n % 1000) == 0)) {
 				if ((n % 1000) == 0) {
-					snr = 10.0 * Math.log10(Math.abs(H0 / error));
-					System.out.printf("n: %9d, Hamiltonian: %.9e, Start: %.9e, Hmin %.9e, Hmax %.9e, Error: %.9e, SNR: %6.1f%n", n, symplectic.hamiltonian(), H0, Hmin, Hmax, error, snr);
+//					snr = 10.0 * Math.log10(Math.abs(H0 * (n + 1) / error));
+//					snr = 10.0 * Math.log10(Math.abs(H0 / error));
+					snr = 10.0 * Math.log10(Math.abs((H0 - Hcurrent) / H0));
+					System.out.printf("n: %9d, Hamiltonian: %.9e, Start: %.9e, Hmin %.9e, Hmax %.9e, Error: %.9e, ER: %6.1f%n", n, symplectic.hamiltonian(), H0, Hmin, Hmax, error, snr);
 				}
 			}
 			n += 1;

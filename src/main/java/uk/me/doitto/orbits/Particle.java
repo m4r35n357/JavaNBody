@@ -12,11 +12,15 @@ public class Particle {
 	public double mass;
 	
 	public double qX;
+	
 	public double qY;
+	
 	public double qZ;
 
 	public double pX;
+	
 	public double pY;
+	
 	public double pZ;
 
 	/**
