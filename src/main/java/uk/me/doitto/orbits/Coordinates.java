@@ -2,35 +2,38 @@ package uk.me.doitto.orbits;
 
 /**
  * @author ian
- *
+ * 
+ * Definitions of the two Hamiltonian coordinates, position and momentum, specifically their update methods
  */
 public enum Coordinates implements Coordinate {
-	POSITION {
+	// Position
+	Q {
 		@Override
-		public void update (Symplectic symplectic, double coefficient) {
+		public void update (Symplectic s, double c) {
 			Particle a;
 			int i;
 			double tmp;
-			for (i = 0; i < symplectic.np; i++) {
-				a = symplectic.particles.get(i);
-				tmp = coefficient / a.mass * symplectic.ts;
+			for (i = 0; i < s.np; i++) {
+				a = s.particles.get(i);
+				tmp = c / a.mass * s.ts;
 				a.qX += a.pX * tmp;
 				a.qY += a.pY * tmp;
 				a.qZ += a.pZ * tmp;
 			}
 		}
 	},
-	MOMENTUM {
+	// Momentum
+	P {
 		@Override
-		public void update (Symplectic symplectic, double coefficient) {
+		public void update (Symplectic s, double c) {
 			Particle a, b;
 			int i, j;
 			double tmp, dPx, dPy, dPz;
-			for (i = 0; i < symplectic.np; i++) {
-				a = symplectic.particles.get(i);
-				for (j = 0; j < symplectic.np; j++) {
-					b = symplectic.particles.get(j);
-					tmp = - coefficient * symplectic.g * a.mass * b.mass / Math.pow(symplectic.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * symplectic.ts;
+			for (i = 0; i < s.np; i++) {
+				a = s.particles.get(i);
+				for (j = 0; j < s.np; j++) {
+					b = s.particles.get(j);
+					tmp = - c * s.g * a.mass * b.mass / Math.pow(s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * s.ts;
 					if (i > j) {
 						dPx = (b.qX - a.qX) * tmp;
 						dPy = (b.qY - a.qY) * tmp;

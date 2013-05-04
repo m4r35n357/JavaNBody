@@ -8,5 +8,5 @@ package uk.me.doitto.orbits;
  *
  */
 public interface Coordinate {
-	void update (Symplectic symplectic, double coefficient);
+	void update (Symplectic s, double c);
 }
