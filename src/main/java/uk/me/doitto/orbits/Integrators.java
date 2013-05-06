@@ -41,6 +41,26 @@ public enum Integrators implements IIntegrators {
 			second.update(s, d3);
 			first.update(s, c4);
 		}
+	},
+	STORMER_VERLET_8 {
+		@Override
+		public void solve (Symplectic s, Coordinates first, Coordinates second) {
+			first.update(s, -0.74167036435061295344822780);
+			second.update(s, 0.40910082580003159399730010);
+			first.update(s, -0.19075471029623837995387626);
+			second.update(s, 0.57386247111608226665638773);
+			first.update(s, -0.29906418130365592384446354);
+			second.update(s, -0.33462491824529818378495798);
+			first.update(s, -0.31529309239676659663205666);
+			second.update(s, 0.79688793935291635401978884);
+			first.update(s, -0.31529309239676659663205666);
+			second.update(s, -0.33462491824529818378495798);
+			first.update(s, -0.29906418130365592384446354);
+			second.update(s, 0.57386247111608226665638773);
+			first.update(s, -0.19075471029623837995387626);
+			second.update(s, 0.40910082580003159399730010);
+			first.update(s, -0.74167036435061295344822780);
+		}
 	};
 
 	@Override

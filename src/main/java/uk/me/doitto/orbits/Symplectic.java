@@ -50,9 +50,9 @@ public class Symplectic {
 	 * @param args
 	 */
 	public static void main (String[] args) {
+		double H0, Hcurrent, Hmin, Hmax, error, snr;
 		boolean debug = true;
 		long n = 0;
-		double H0, Hcurrent, Hmin, Hmax, error, snr;
 		Symplectic s = new Symplectic(InitialConditions.EIGHT_BODY);
 		H0 = s.hamiltonian();
 		Hmin = H0;
