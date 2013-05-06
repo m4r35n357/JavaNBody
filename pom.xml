@@ -35,13 +35,13 @@
 		
 		<site>
 			<id>site</id>
-			<url>file:///net/nas/Public/${name}/</url>
+			<url>file:///net/nas/Public/${project.name}/</url>
 		</site>
 	</distributionManagement>
 
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://sumo:8080/jenkins/job/${name}/</url>
+		<url>http://sumo:8080/jenkins/job/${project.name}/</url>
 	</ciManagement>
 
 	<scm>
@@ -64,6 +64,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
 					<archive>
 						<manifest>
