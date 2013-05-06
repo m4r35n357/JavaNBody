@@ -11,6 +11,7 @@ public enum Integrators implements IIntegrators {
 	EULER {
 		@Override
 		public void solve (Symplectic s, Coordinates first, Coordinates second) {
+			assert first != second;
 			first.update(s, 1.0);
 			second.update(s, 1.0);
 		}
@@ -18,6 +19,7 @@ public enum Integrators implements IIntegrators {
 	STORMER_VERLET_2 {
 		@Override
 		public void solve (Symplectic s, Coordinates first, Coordinates second) {
+			assert first != second;
 			first.update(s, 0.5);
 			second.update(s, 1.0);
 			first.update(s, 0.5);
@@ -26,6 +28,7 @@ public enum Integrators implements IIntegrators {
 	STORMER_VERLET_4 {
 		@Override
 		public void solve (Symplectic s, Coordinates first, Coordinates second) {
+			assert first != second;
 			double c1, c2, c3, c4, d1, d2, d3;
 			double cubeRoot2 = Math.pow(2.0, 1.0 / 3.0);
 			double denom = 2.0 - cubeRoot2;
@@ -45,6 +48,7 @@ public enum Integrators implements IIntegrators {
 	STORMER_VERLET_8 {
 		@Override
 		public void solve (Symplectic s, Coordinates first, Coordinates second) {
+			assert first != second;
 			first.update(s, -0.74167036435061295344822780);
 			second.update(s, 0.40910082580003159399730010);
 			first.update(s, -0.19075471029623837995387626);

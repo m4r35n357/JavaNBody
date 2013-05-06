@@ -5,6 +5,9 @@ package uk.me.doitto.orbits;
 
 import java.util.ArrayList;
 import java.util.List;
+import static uk.me.doitto.orbits.Coordinates.*;
+import static uk.me.doitto.orbits.Integrators.*;
+import static uk.me.doitto.orbits.InitialConditions.*;
 
 /**
  * @author ian
@@ -25,6 +28,17 @@ public class Symplectic {
 		this.np = ic.bodies.size();
 	}
 	
+	public Symplectic (List<Particle> bodies) {
+		// destroy reference to input array so the client can't change it
+		this.particles = new ArrayList<Particle>(bodies);
+		this.np = bodies.size();
+	}
+	
+	public List<Particle> getParticles() {
+		// return a copy
+		return new ArrayList<Particle>(particles);
+	}
+
 	double distance (double xA, double yA, double zA, double xB, double yB, double zB) {
 		return Math.sqrt(Math.pow(xB - xA, 2) + Math.pow(yB - yA, 2) + Math.pow(zB - zA, 2));
 	}
@@ -50,28 +64,27 @@ public class Symplectic {
 	 * @param args
 	 */
 	public static void main (String[] args) {
-		double H0, Hcurrent, Hmin, Hmax, error, snr;
+		double h0, hMin, hMax, error;
 		boolean debug = true;
 		long n = 0;
-		Symplectic s = new Symplectic(InitialConditions.EIGHT_BODY);
-		H0 = s.hamiltonian();
-		Hmin = H0;
-		Hmax = H0;
+		Symplectic s = new Symplectic(EIGHT_BODY);
+		h0 = s.hamiltonian();
+		hMin = h0;
+		hMax = h0;
 		error = 0.0;
 		while (n <= 400000) {
-			Integrators.STORMER_VERLET_4.solve(s, Coordinates.Q, Coordinates.P);
+			STORMER_VERLET_4.solve(s, Q, P);
 			if (debug) {
-				Hcurrent = s.hamiltonian();
-				if (Hcurrent < Hmin) {
-					Hmin = Hcurrent;
-					error += Math.abs(Hcurrent - H0);
-				} else if (Hcurrent > Hmax) {
-					Hmax = Hcurrent;
-					error += Math.abs(Hcurrent - H0);
+				double hNow = s.hamiltonian();
+				double dH = hNow - h0;
+//				error += Math.abs(dH);
+				if (hNow < hMin) {
+					hMin = hNow;
+				} else if (hNow > hMax) {
+					hMax = hNow;
 				}
 				if ((n % 1000) == 0) {
-					snr = 10.0 * Math.log10(Math.abs((H0 - Hcurrent) / H0));
-					System.out.printf("n: %9d, Hamiltonian: %.9e, Start: %.9e, Hmin %.9e, Hmax %.9e, Error: %.9e, ER: %6.1f%n", n, s.hamiltonian(), H0, Hmin, Hmax, error, snr);
+					System.out.printf("n: %9d, Hamiltonian: %.9e, Start: %.9e, Hmin %.9e, Hmax %.9e, Error: %.3e, ER: %6.1f%n", n, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
 				}
 			}
 			n += 1;
