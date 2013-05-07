@@ -15,6 +15,10 @@ import static uk.me.doitto.orbits.InitialConditions.*;
  */
 public class Symplectic {
 	
+	static double INTEGRATION_TIME = 50000.0;
+	
+	double iterations = 0.0;
+	
 	double g = 0.0;
 	
 	double ts = 0.0;
@@ -23,11 +27,12 @@ public class Symplectic {
 	
 	List<Particle> particles = new ArrayList<Particle>();
 	
-	public Symplectic (double g, double ts, InitialConditions ic) {
+	public Symplectic (InitialConditions ic) {
 		this.particles = ic.bodies;
 		this.np = ic.bodies.size();
-		this.g = g;
-		this.ts = ts;
+		this.g = ic.g;
+		this.ts = ic.ts;
+		this.iterations = INTEGRATION_TIME / this.ts;
 	}
 	
 	public Symplectic(double g, double ts, List<Particle> bodies) {
@@ -36,6 +41,7 @@ public class Symplectic {
 		this.np = bodies.size();
 		this.g = g;
 		this.ts = ts;
+		this.iterations = INTEGRATION_TIME / this.ts;
 	}
 
 	public List<Particle> getParticles() {
@@ -71,11 +77,11 @@ public class Symplectic {
 		double h0, hMin, hMax;
 		boolean debug = true;
 		long n = 0;
-		Symplectic s = new Symplectic(0.05, 0.001, EIGHT_BODY);
+		Symplectic s = new Symplectic(FOUR_BODY);
 		h0 = s.hamiltonian();
 		hMin = h0;
 		hMax = h0;
-		while (n <= 400000) {
+		while (n <= s.iterations) {
 			STORMER_VERLET_4.solve(s, Q, P);
 			if (debug) {
 				double hNow = s.hamiltonian();
@@ -86,7 +92,7 @@ public class Symplectic {
 					hMax = hNow;
 				}
 				if ((n % 1000) == 0) {
-					System.out.printf("n: %9d, Hamiltonian: %.9e, Start: %.9e, Hmin %.9e, Hmax %.9e, Error: %.3e, ER: %6.1f%n", n, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
+					System.out.printf("t: %6.0f, H: %.9e, H0: %.9e, H- %.9e, H+ %.9e, E: %.1e, ER: %6.1f%n", n * s.ts, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
 				}
 			}
 			n += 1;

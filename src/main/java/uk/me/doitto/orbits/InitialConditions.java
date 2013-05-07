@@ -14,6 +14,8 @@ public enum InitialConditions {
 	CRISS_CROSS {
 		@Override
 		public void populate () {
+			g = 0.05;
+			ts = 0.001;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.1, 0.1, 0.0, 1.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
@@ -22,13 +24,28 @@ public enum InitialConditions {
 	TWO_BODY {
 		@Override
 		public void populate () {
+			g = 0.05;
+			ts = 0.001;
 			bodies.add(new Particle(1.0, 2.0, 0.0, 0.1, 0.1, 0.0, 5.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
+		}
+	},
+	FOUR_BODY {
+		@Override
+		public void populate () {
+			g = 3.5;
+			ts = 0.001;
+			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
+			bodies.add(new Particle(-1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0));
+			bodies.add(new Particle(1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0));
+			bodies.add(new Particle(-1.0, 1.0, -1.0, -1.0, -1.0, 1.0, 1.0));
 		}
 	},
 	EIGHT_BODY {
 		@Override
 		public void populate () {
+			g = 0.05;
+			ts = 0.001;
 			bodies.add(new Particle(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0));
 			bodies.add(new Particle(0.0, 4.5, 0.4, -0.2, 0.0, 1.8, 2.0));
 			bodies.add(new Particle(-6.0, 0.0, -0.4, 0.0, -0.6, 1.0, 3.0));
@@ -40,7 +57,11 @@ public enum InitialConditions {
 		}
 	};
 	
-	public List<Particle> bodies = new ArrayList<Particle>();
+	double g = 0.0;
+	
+	double ts = 0.0;
+	
+	List<Particle> bodies = new ArrayList<Particle>();
 
 	private InitialConditions () {
 		populate();
