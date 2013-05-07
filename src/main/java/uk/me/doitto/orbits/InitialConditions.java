@@ -11,6 +11,14 @@ import java.util.List;
  *
  */
 public enum InitialConditions implements IInitialConditions {
+	CRISS_CROSS {
+		@Override
+		public void populate () {
+			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.1, 0.1, 0.0, 1.0));
+			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
+			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
+		}
+	},
 	TWO_BODY {
 		@Override
 		public void populate () {

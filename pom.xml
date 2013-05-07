@@ -7,6 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>NBody3D</name>
 	<description>N-Body 3D Orbit Simulator</description>
+	<url>http://doitto.me.uk</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -62,6 +63,49 @@
 		<connection>scm:git:/net/nas/Public/Freecom400GB/GitRepos/NBody3D.git</connection>
 		<developerConnection>scm:git:/net/nas/Public/Freecom400GB/GitRepos/NBody3D.git</developerConnection>
 	</scm>
+
+	<profiles>
+		<!-- Generate source & javadoc JARs -->
+		<profile>
+			<id>extras</id>
+			
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.1.2</version>
+						<executions>
+							<execution>
+								<id>-o-  SOURCE: ATTACH JAR  -o-</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.7</version>
+						<executions>
+							<execution>
+								<id>-o-  JAVADOC: ATTACH JAR  -o-</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>

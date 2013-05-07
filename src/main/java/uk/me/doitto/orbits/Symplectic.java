@@ -15,25 +15,29 @@ import static uk.me.doitto.orbits.InitialConditions.*;
  */
 public class Symplectic {
 	
-	double g = 0.05;
+	double g = 0.0;
 	
-	double ts = 0.001;
+	double ts = 0.0;
 	
 	int np = 0;
 	
 	List<Particle> particles = new ArrayList<Particle>();
 	
-	public Symplectic (InitialConditions ic) {
+	public Symplectic (double g, double ts, InitialConditions ic) {
 		this.particles = ic.bodies;
 		this.np = ic.bodies.size();
+		this.g = g;
+		this.ts = ts;
 	}
 	
-	public Symplectic (List<Particle> bodies) {
-		// destroy reference to input array so the client can't change it
+	public Symplectic(double g, double ts, List<Particle> bodies) {
+		// destroy reference to input array so the client can't change i
 		this.particles = new ArrayList<Particle>(bodies);
 		this.np = bodies.size();
+		this.g = g;
+		this.ts = ts;
 	}
-	
+
 	public List<Particle> getParticles() {
 		// return a copy
 		return new ArrayList<Particle>(particles);
@@ -67,7 +71,7 @@ public class Symplectic {
 		double h0, hMin, hMax, error;
 		boolean debug = true;
 		long n = 0;
-		Symplectic s = new Symplectic(EIGHT_BODY);
+		Symplectic s = new Symplectic(0.05, 0.001, EIGHT_BODY);
 		h0 = s.hamiltonian();
 		hMin = h0;
 		hMax = h0;

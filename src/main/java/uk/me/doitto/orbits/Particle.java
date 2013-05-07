@@ -3,11 +3,18 @@
  */
 package uk.me.doitto.orbits;
 
+import java.io.Serializable;
+
 /**
  * @author ian
  *
  */
-public class Particle {
+public class Particle implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	public double qX, qY, qZ, pX, pY, pZ, mass;
 	
