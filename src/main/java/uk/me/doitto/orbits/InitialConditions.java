@@ -10,7 +10,7 @@ import java.util.List;
  * @author ian
  *
  */
-public enum InitialConditions implements IInitialConditions {
+public enum InitialConditions {
 	CRISS_CROSS {
 		@Override
 		public void populate () {
@@ -46,6 +46,5 @@ public enum InitialConditions implements IInitialConditions {
 		populate();
 	}
 	
-	@Override
 	public abstract void populate ();
 }

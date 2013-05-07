@@ -68,20 +68,18 @@ public class Symplectic {
 	 * @param args
 	 */
 	public static void main (String[] args) {
-		double h0, hMin, hMax, error;
+		double h0, hMin, hMax;
 		boolean debug = true;
 		long n = 0;
 		Symplectic s = new Symplectic(0.05, 0.001, EIGHT_BODY);
 		h0 = s.hamiltonian();
 		hMin = h0;
 		hMax = h0;
-		error = 0.0;
 		while (n <= 400000) {
 			STORMER_VERLET_4.solve(s, Q, P);
 			if (debug) {
 				double hNow = s.hamiltonian();
 				double dH = hNow - h0;
-//				error += Math.abs(dH);
 				if (hNow < hMin) {
 					hMin = hNow;
 				} else if (hNow > hMax) {

@@ -5,7 +5,7 @@ package uk.me.doitto.orbits;
  * 
  * Definitions of the two Hamiltonian coordinates, position and momentum, specifically their update methods
  */
-public enum Coordinates implements Coordinate {
+public enum Coordinates {
 	// Position
 	Q {
 		@Override
@@ -50,6 +50,5 @@ public enum Coordinates implements Coordinate {
 		}
 	};
 
-	@Override
 	public abstract void update (Symplectic symplectic, double coefficient);
 }

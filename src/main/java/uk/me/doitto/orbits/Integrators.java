@@ -7,7 +7,7 @@ package uk.me.doitto.orbits;
  * @author ian
  *
  */
-public enum Integrators implements IIntegrators {
+public enum Integrators {
 	EULER {
 		@Override
 		public void solve (Symplectic s, Coordinates first, Coordinates second) {
@@ -67,6 +67,5 @@ public enum Integrators implements IIntegrators {
 		}
 	};
 
-	@Override
 	public abstract void solve (Symplectic s, Coordinates first, Coordinates second);
 }
