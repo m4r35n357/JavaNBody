@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * @author ian
+ * 
+ * Scenarios
  *
  */
 public enum InitialConditions {
@@ -15,6 +17,7 @@ public enum InitialConditions {
 		@Override
 		public void populate () {
 			g = 0.05;
+			simulationTime = 10000.0;
 			ts = 0.001;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.1, 0.1, 0.0, 1.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
@@ -25,6 +28,7 @@ public enum InitialConditions {
 		@Override
 		public void populate () {
 			g = 0.05;
+			simulationTime = 10000.0;
 			ts = 0.001;
 			bodies.add(new Particle(1.0, 2.0, 0.0, 0.1, 0.1, 0.0, 5.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
@@ -34,6 +38,7 @@ public enum InitialConditions {
 		@Override
 		public void populate () {
 			g = 3.5;
+			simulationTime = 10000.0;
 			ts = 0.001;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
 			bodies.add(new Particle(-1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0));
@@ -45,6 +50,7 @@ public enum InitialConditions {
 		@Override
 		public void populate () {
 			g = 0.05;
+			simulationTime = 10000.0;
 			ts = 0.001;
 			bodies.add(new Particle(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0));
 			bodies.add(new Particle(0.0, 4.5, 0.4, -0.2, 0.0, 1.8, 2.0));
@@ -59,6 +65,8 @@ public enum InitialConditions {
 	
 	double g = 0.0;
 	
+	double simulationTime = 0.0;
+
 	double ts = 0.0;
 	
 	List<Particle> bodies = new ArrayList<Particle>();

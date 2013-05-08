@@ -15,7 +15,7 @@ public enum Coordinates {
 			double tmp;
 			for (i = 0; i < s.np; i++) {
 				a = s.particles.get(i);
-				tmp = c / a.mass * s.ts;
+				tmp = c / a.mass * s.timeStep;
 				a.qX += a.pX * tmp;
 				a.qY += a.pY * tmp;
 				a.qZ += a.pZ * tmp;
@@ -33,7 +33,7 @@ public enum Coordinates {
 				a = s.particles.get(i);
 				for (j = 0; j < s.np; j++) {
 					b = s.particles.get(j);
-					tmp = - c * s.g * a.mass * b.mass / Math.pow(s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * s.ts;
+					tmp = - c * s.g * a.mass * b.mass / Math.pow(s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * s.timeStep;
 					if (i > j) {
 						dPx = (b.qX - a.qX) * tmp;
 						dPy = (b.qY - a.qY) * tmp;

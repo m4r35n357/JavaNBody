@@ -5,6 +5,8 @@ package uk.me.doitto.orbits;
 
 /**
  * @author ian
+ * 
+ * Symplectic integrators of various orders and types
  *
  */
 public enum Integrators {

@@ -15,13 +15,11 @@ import static uk.me.doitto.orbits.InitialConditions.*;
  */
 public class Symplectic {
 	
-	static double INTEGRATION_TIME = 50000.0;
-	
 	double iterations = 0.0;
 	
 	double g = 0.0;
 	
-	double ts = 0.0;
+	double timeStep = 0.0;
 	
 	int np = 0;
 	
@@ -31,17 +29,17 @@ public class Symplectic {
 		this.particles = ic.bodies;
 		this.np = ic.bodies.size();
 		this.g = ic.g;
-		this.ts = ic.ts;
-		this.iterations = INTEGRATION_TIME / this.ts;
+		this.timeStep = ic.ts;
+		this.iterations = ic.simulationTime / ic.ts;
 	}
 	
-	public Symplectic(double g, double ts, List<Particle> bodies) {
+	public Symplectic(double g, double simulationTime, double timeStep, List<Particle> bodies) {
 		// destroy reference to input array so the client can't change i
 		this.particles = new ArrayList<Particle>(bodies);
 		this.np = bodies.size();
 		this.g = g;
-		this.ts = ts;
-		this.iterations = INTEGRATION_TIME / this.ts;
+		this.timeStep = timeStep;
+		this.iterations = simulationTime / timeStep;
 	}
 
 	public List<Particle> getParticles() {
@@ -92,7 +90,7 @@ public class Symplectic {
 					hMax = hNow;
 				}
 				if ((n % 1000) == 0) {
-					System.out.printf("t: %6.0f, H: %.9e, H0: %.9e, H- %.9e, H+ %.9e, E: %.1e, ER: %6.1f%n", n * s.ts, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
+					System.out.printf("t:%6.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
 				}
 			}
 			n += 1;
