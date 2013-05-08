@@ -1,6 +1,3 @@
-/**
- * 
- */
 package uk.me.doitto.orbits;
 
 import java.io.Serializable;
@@ -8,20 +5,15 @@ import java.io.Serializable;
 /**
  * @author ian
  *
+ * Holds per-particle data
  */
 public class Particle implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	double qX, qY, qZ, pX, pY, pZ, mass;
 	
-	/**
-	 * 
-	 */
-	public Particle (double qX, double qY, double qZ, double pX ,double pY ,double pZ, double mass) {
+	public Particle (double qX, double qY, double qZ, double pX, double pY, double pZ, double mass) {
 		this.qX = qX;
 		this.qY = qY;
 		this.qZ = qZ;

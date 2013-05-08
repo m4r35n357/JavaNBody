@@ -1,6 +1,3 @@
-/**
- * 
- */
 package uk.me.doitto.orbits;
 
 /**

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package uk.me.doitto.orbits;
 
 import java.util.ArrayList;
@@ -12,6 +9,7 @@ import static uk.me.doitto.orbits.InitialConditions.*;
 /**
  * @author ian
  *
+ * Main class for symplectic integrator simulations
  */
 public class Symplectic {
 	
