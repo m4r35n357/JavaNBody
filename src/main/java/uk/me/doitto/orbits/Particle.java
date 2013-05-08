@@ -16,7 +16,9 @@ public class Particle implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public double qX, qY, qZ, pX, pY, pZ, mass;
+	private static double DENSITY = 1.0e9;
+	
+	double qX, qY, qZ, pX, pY, pZ, mass;
 	
 	/**
 	 * 
@@ -31,4 +33,8 @@ public class Particle implements Serializable {
 		this.mass = mass;
 	}
 
+	public double radius () {
+		return Math.pow(mass / DENSITY, 1.0 / 3.0);
+	}
+	
 }

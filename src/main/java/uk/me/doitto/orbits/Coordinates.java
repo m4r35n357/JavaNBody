@@ -27,14 +27,20 @@ public enum Coordinates {
 		@Override
 		public void update (Symplectic s, double c) {
 			Particle a, b;
+			double separation;
 			int i, j;
 			double tmp, dPx, dPy, dPz;
 			for (i = 0; i < s.np; i++) {
 				a = s.particles.get(i);
 				for (j = 0; j < s.np; j++) {
 					b = s.particles.get(j);
-					tmp = - c * s.g * a.mass * b.mass / Math.pow(s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * s.timeStep;
 					if (i > j) {
+						separation = s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ);
+						if (separation > (a.radius() + b.radius())) {
+							tmp = - c * s.g * a.mass * b.mass / Math.pow(separation, 3) * s.timeStep;
+						} else {
+							tmp = - c * s.g * a.mass * b.mass / Math.pow(a.radius() + b.radius(), 3) * s.timeStep;
+						}
 						dPx = (b.qX - a.qX) * tmp;
 						dPy = (b.qY - a.qY) * tmp;
 						dPz = (b.qZ - a.qZ) * tmp;
