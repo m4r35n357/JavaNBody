@@ -10,7 +10,6 @@ import java.util.List;
  * @author ian
  * 
  * Scenarios
- *
  */
 public enum InitialConditions {
 	CRISS_CROSS {
@@ -38,7 +37,7 @@ public enum InitialConditions {
 		@Override
 		public void populate () {
 			g = 3.5;
-			ts = 0.01;
+			ts = 0.001;
 			simulationTime = 10000.0;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
 			bodies.add(new Particle(-1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0));
