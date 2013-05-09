@@ -31,7 +31,7 @@ public class Symplectic {
 		this.iterations = ic.simulationTime / ic.ts;
 	}
 	
-	public Symplectic(double g, double simulationTime, double timeStep, List<Particle> bodies) {
+	public Symplectic (double g, double simulationTime, double timeStep, List<Particle> bodies) {
 		// destroy reference to input array so the client can't change i
 		this.particles = new ArrayList<Particle>(bodies);
 		this.np = bodies.size();
@@ -40,7 +40,7 @@ public class Symplectic {
 		this.iterations = simulationTime / timeStep;
 	}
 
-	public List<Particle> getParticles() {
+	public List<Particle> getParticles () {
 		// return a copy
 		return new ArrayList<Particle>(particles);
 	}
@@ -67,13 +67,15 @@ public class Symplectic {
 	}
 
 	/**
-	 * @param args
+	 * Test method for symplectic integrators
+	 * 
+	 * @param args None defined
 	 */
 	public static void main (String[] args) {
 		double h0, hMin, hMax;
 		boolean debug = true;
 		long n = 0;
-		Symplectic s = new Symplectic(FOUR_BODY);
+		Symplectic s = new Symplectic(THREE_BODY);
 		h0 = s.hamiltonian();
 		hMin = h0;
 		hMax = h0;
@@ -88,7 +90,7 @@ public class Symplectic {
 					hMax = hNow;
 				}
 				if ((n % 1000) == 0) {
-					System.out.printf("t:%6.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
+					System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
 				}
 			}
 			n += 1;
