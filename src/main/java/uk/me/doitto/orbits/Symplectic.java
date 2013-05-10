@@ -3,8 +3,8 @@ package uk.me.doitto.orbits;
 import java.util.ArrayList;
 import java.util.List;
 import static uk.me.doitto.orbits.PhaseSpace.*;
-import static uk.me.doitto.orbits.Integrators.*;
-import static uk.me.doitto.orbits.InitialConditions.*;
+import static uk.me.doitto.orbits.Integrator.*;
+import static uk.me.doitto.orbits.Scenario.*;
 
 /**
  * @author ian
@@ -23,21 +23,25 @@ public class Symplectic {
 	
 	List<Particle> particles = new ArrayList<Particle>();
 	
-	public Symplectic (InitialConditions ic) {
+	Integrator integrator;
+	
+	public Symplectic (Scenario ic, Integrator integrator) {
 		this.particles = ic.bodies;
 		this.np = ic.bodies.size();
 		this.g = ic.g;
 		this.timeStep = ic.ts;
 		this.iterations = ic.simulationTime / ic.ts;
+		this.integrator = integrator;
 	}
 	
-	public Symplectic (double g, double simulationTime, double timeStep, List<Particle> bodies) {
+	public Symplectic (double g, double simulationTime, double timeStep, List<Particle> bodies, String integrator) {
 		// destroy reference to input array so the client can't change i
 		this.particles = new ArrayList<Particle>(bodies);
 		this.np = bodies.size();
 		this.g = g;
 		this.timeStep = timeStep;
 		this.iterations = simulationTime / timeStep;
+		this.integrator = Integrator.valueOf(integrator);
 	}
 
 	public List<Particle> getParticles () {
@@ -71,33 +75,28 @@ public class Symplectic {
 	 * @param args None defined
 	 */
 	public static void main (String[] args) {
-		double h0, hMin, hMax;
-//		boolean debug = true;
+		Symplectic s = new Symplectic(THREE_BODY, STORMER_VERLET_4);
 		long n = 0;
-		Symplectic s = new Symplectic(THREE_BODY);
-		h0 = s.hamiltonian();
-		hMin = h0;
-		hMax = h0;
-		StringBuilder json;
+		double h0 = s.hamiltonian();
+		double hMin = h0;
+		double hMax = h0;
 		while (n <= s.iterations) {
-			STORMER_VERLET_4.solve(s, Q, P);
-//			if (debug) {
-				double hNow = s.hamiltonian();
-				double dH = hNow - h0;
-				if (hNow < hMin) {
-					hMin = hNow;
-				} else if (hNow > hMax) {
-					hMax = hNow;
+			s.integrator.solve(s, Q, P);
+			double hNow = s.hamiltonian();
+			double dH = hNow - h0;
+			if (hNow < hMin) {
+				hMin = hNow;
+			} else if (hNow > hMax) {
+				hMax = hNow;
+			}
+			if ((n % 1000) == 0) {
+				StringBuilder json = new StringBuilder("[");
+				for (Particle p : s.particles) {
+					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
 				}
-				if ((n % 1000) == 0) {
-					json = new StringBuilder("[");
-					for (Particle p : s.particles) {
-						json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
-					}
-					System.out.println(json + "]");
-					System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
-				}
-//			}
+				System.out.println(json + "]");
+				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
+			}
 			n += 1;
 		}
 	}

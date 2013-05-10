@@ -5,7 +5,7 @@ package uk.me.doitto.orbits;
  * 
  * Symplectic integrators of various orders and types
  */
-public enum Integrators {
+public enum Integrator {
 	EULER {
 		@Override
 		public void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {

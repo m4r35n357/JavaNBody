@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * Scenarios
  */
-public enum InitialConditions {
+public enum Scenario {
 	CRISS_CROSS {
 		@Override
 		public void populate () {
@@ -78,7 +78,7 @@ public enum InitialConditions {
 	
 	List<Particle> bodies = new ArrayList<Particle>();
 
-	private InitialConditions () {
+	private Scenario () {
 		populate();
 	}
 	
