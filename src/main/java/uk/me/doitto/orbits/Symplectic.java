@@ -72,16 +72,16 @@ public class Symplectic {
 	 */
 	public static void main (String[] args) {
 		double h0, hMin, hMax;
-		boolean debug = true;
+//		boolean debug = true;
 		long n = 0;
-		Symplectic s = new Symplectic(TWO_BODY);
+		Symplectic s = new Symplectic(THREE_BODY);
 		h0 = s.hamiltonian();
 		hMin = h0;
 		hMax = h0;
 		StringBuilder json;
 		while (n <= s.iterations) {
 			STORMER_VERLET_4.solve(s, Q, P);
-			if (debug) {
+//			if (debug) {
 				double hNow = s.hamiltonian();
 				double dH = hNow - h0;
 				if (hNow < hMin) {
@@ -90,14 +90,14 @@ public class Symplectic {
 					hMax = hNow;
 				}
 				if ((n % 1000) == 0) {
-//					json = new StringBuilder("[");
-//					for (Particle p : s.particles) {
-//						json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
-//					}
-//					System.out.println(json + "]");
+					json = new StringBuilder("[");
+					for (Particle p : s.particles) {
+						json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
+					}
+					System.out.println(json + "]");
 					System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
 				}
-			}
+//			}
 			n += 1;
 		}
 	}
