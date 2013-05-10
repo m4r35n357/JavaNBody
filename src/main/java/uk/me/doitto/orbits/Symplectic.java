@@ -65,19 +65,6 @@ public class Symplectic {
 		return totalEnergy;
 	}
 
-//	public double hamiltonian () {
-//		double energy = 0.0;
-//		for (Particle a : particles) {
-//			energy += 0.5 * (a.pX * a.pX + a.pY * a.pY + a.pZ * a.pZ) / a.mass;
-//			for (Particle b : particles) {
-//				if (particles.indexOf(a) > particles.indexOf(b)) {
-//					energy -= g * a.mass * b.mass / distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ);
-//				}
-//			}
-//		}
-//		return energy;
-//	}
-
 	/**
 	 * Test method for symplectic integrators
 	 * 
@@ -85,7 +72,7 @@ public class Symplectic {
 	 */
 	public static void main (String[] args) {
 		double h0, hMin, hMax;
-		boolean debug = false;
+		boolean debug = true;
 		long n = 0;
 		Symplectic s = new Symplectic(FOUR_BODY);
 		h0 = s.hamiltonian();
@@ -108,7 +95,7 @@ public class Symplectic {
 //						json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
 //					}
 //					System.out.println(json + "]");
-//					System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
+					System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
 				}
 			}
 			n += 1;

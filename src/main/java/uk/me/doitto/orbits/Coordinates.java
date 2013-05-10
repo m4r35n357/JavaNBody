@@ -20,15 +20,6 @@ public enum Coordinates {
 				a.qZ += a.pZ * tmp;
 			}
 		}
-//		public void update (Symplectic s, double c) {
-//			double tmp;
-//			for (Particle a : s.particles) {
-//				tmp = c / a.mass * s.timeStep;
-//				a.qX += a.pX * tmp;
-//				a.qY += a.pY * tmp;
-//				a.qZ += a.pZ * tmp;
-//			}
-//		}
 	},
 	// Momentum
 	P {
@@ -55,25 +46,6 @@ public enum Coordinates {
 				}
 			}
 		}
-//		public void update (Symplectic s, double c) {
-//			double tmp, dPx, dPy, dPz;
-//			for (Particle a : s.particles) {
-//				for (Particle b : s.particles) {
-//					if (s.particles.indexOf(a) > s.particles.indexOf(b)) {
-//						tmp = - c * s.g * a.mass * b.mass / Math.pow(s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * s.timeStep;
-//						dPx = (b.qX - a.qX) * tmp;
-//						dPy = (b.qY - a.qY) * tmp;
-//						dPz = (b.qZ - a.qZ) * tmp;
-//						a.pX -= dPx;
-//						a.pY -= dPy;
-//						a.pZ -= dPz;
-//						b.pX += dPx;
-//						b.pY += dPy;
-//						b.pZ += dPz;
-//					}
-//				}
-//			}
-//		}
 	};
 
 	public abstract void update (Symplectic symplectic, double coefficient);

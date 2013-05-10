@@ -46,7 +46,7 @@ public enum InitialConditions {
 		public void populate () {
 			g = 3.5;
 			ts = 0.001;
-			simulationTime = 2.0e4;
+			simulationTime = 1.0e6;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
 			bodies.add(new Particle(-1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0));
 			bodies.add(new Particle(1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0));
