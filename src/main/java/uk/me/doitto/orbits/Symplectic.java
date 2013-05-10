@@ -51,12 +51,11 @@ public class Symplectic {
 	
 	public double hamiltonian () {
 		Particle a, b;
-		int i, j;
 		double totalEnergy = 0.0;
-		for (i = 0; i < np; i++) {
+		for (int i = 0; i < np; i++) {
 			a = particles.get(i);
 			totalEnergy += 0.5 * (a.pX * a.pX + a.pY * a.pY + a.pZ * a.pZ) / a.mass;
-			for (j = 0; j < np; j++) {
+			for (int j = 0; j < np; j++) {
 				if (i > j) {
 					b = particles.get(j);
 					totalEnergy -= g * a.mass * b.mass / distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ);
@@ -79,6 +78,7 @@ public class Symplectic {
 		h0 = s.hamiltonian();
 		hMin = h0;
 		hMax = h0;
+		StringBuilder json;
 		while (n <= s.iterations) {
 			STORMER_VERLET_4.solve(s, Q, P);
 			if (debug) {
@@ -90,6 +90,13 @@ public class Symplectic {
 					hMax = hNow;
 				}
 				if ((n % 1000) == 0) {
+					json = new StringBuilder("[");
+					for (int i = 0; i < s.np; i++) {
+						Particle p = s.particles.get(i);
+						json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
+					}
+					json.append("]");
+					System.out.println(json);
 					System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
 				}
 			}

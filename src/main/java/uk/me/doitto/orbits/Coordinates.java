@@ -11,9 +11,8 @@ public enum Coordinates {
 		@Override
 		public void update (Symplectic s, double c) {
 			Particle a;
-			int i;
 			double tmp;
-			for (i = 0; i < s.np; i++) {
+			for (int i = 0; i < s.np; i++) {
 				a = s.particles.get(i);
 				tmp = c / a.mass * s.timeStep;
 				a.qX += a.pX * tmp;
@@ -27,11 +26,10 @@ public enum Coordinates {
 		@Override
 		public void update (Symplectic s, double c) {
 			Particle a, b;
-			int i, j;
 			double tmp, dPx, dPy, dPz;
-			for (i = 0; i < s.np; i++) {
+			for (int i = 0; i < s.np; i++) {
 				a = s.particles.get(i);
-				for (j = 0; j < s.np; j++) {
+				for (int j = 0; j < s.np; j++) {
 					b = s.particles.get(j);
 					if (i > j) {
 						tmp = - c * s.g * a.mass * b.mass / Math.pow(s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * s.timeStep;
