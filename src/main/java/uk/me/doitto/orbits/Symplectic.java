@@ -74,7 +74,7 @@ public class Symplectic {
 		double h0, hMin, hMax;
 		boolean debug = true;
 		long n = 0;
-		Symplectic s = new Symplectic(FOUR_BODY);
+		Symplectic s = new Symplectic(TWO_BODY);
 		h0 = s.hamiltonian();
 		hMin = h0;
 		hMax = h0;
