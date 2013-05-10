@@ -2,7 +2,7 @@ package uk.me.doitto.orbits;
 
 import java.util.ArrayList;
 import java.util.List;
-import static uk.me.doitto.orbits.Coordinates.*;
+import static uk.me.doitto.orbits.PhaseSpace.*;
 import static uk.me.doitto.orbits.Integrators.*;
 import static uk.me.doitto.orbits.InitialConditions.*;
 

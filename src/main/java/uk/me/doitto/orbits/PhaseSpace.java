@@ -5,7 +5,7 @@ package uk.me.doitto.orbits;
  * 
  * Definitions of the two Hamiltonian coordinates, position and momentum, specifically their update methods
  */
-public enum Coordinates {
+public enum PhaseSpace {
 	// Position
 	Q {
 		@Override

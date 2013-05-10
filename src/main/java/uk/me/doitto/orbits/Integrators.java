@@ -8,7 +8,7 @@ package uk.me.doitto.orbits;
 public enum Integrators {
 	EULER {
 		@Override
-		public void solve (Symplectic s, Coordinates first, Coordinates second) {
+		public void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
 			assert first != second;
 			first.update(s, 1.0);
 			second.update(s, 1.0);
@@ -16,7 +16,7 @@ public enum Integrators {
 	},
 	STORMER_VERLET_2 {
 		@Override
-		public void solve (Symplectic s, Coordinates first, Coordinates second) {
+		public void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
 			assert first != second;
 			first.update(s, 0.5);
 			second.update(s, 1.0);
@@ -25,7 +25,7 @@ public enum Integrators {
 	},
 	STORMER_VERLET_4 {
 		@Override
-		public void solve (Symplectic s, Coordinates first, Coordinates second) {
+		public void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
 			assert first != second;
 			double c1, c2, c3, c4, d1, d2, d3;
 			double cubeRoot2 = Math.pow(2.0, 1.0 / 3.0);
@@ -44,5 +44,5 @@ public enum Integrators {
 		}
 	};
 
-	public abstract void solve (Symplectic s, Coordinates first, Coordinates second);
+	public abstract void solve (Symplectic s, PhaseSpace first, PhaseSpace second);
 }
