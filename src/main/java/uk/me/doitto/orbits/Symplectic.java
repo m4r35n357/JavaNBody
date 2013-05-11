@@ -2,14 +2,11 @@ package uk.me.doitto.orbits;
 
 import java.util.ArrayList;
 import java.util.List;
-import static uk.me.doitto.orbits.PhaseSpace.*;
-import static uk.me.doitto.orbits.Integrator.*;
-import static uk.me.doitto.orbits.Scenario.*;
 
 /**
  * @author ian
  *
- * Main class for symplectic integrator simulations
+ * Top level class for symplectic integrator simulations
  */
 public class Symplectic {
 	
@@ -58,50 +55,49 @@ public class Symplectic {
 	}
 	
 	public double hamiltonian () {
-		Particle a, b;
-		double totalEnergy = 0.0;
+		double energy = 0.0;
 		for (int i = 0; i < np; i++) {
-			a = particles.get(i);
-			totalEnergy += 0.5 * (a.pX * a.pX + a.pY * a.pY + a.pZ * a.pZ) / a.mass;
+			Particle a = particles.get(i);
+			energy += 0.5 * (a.pX * a.pX + a.pY * a.pY + a.pZ * a.pZ) / a.mass;
 			for (int j = 0; j < np; j++) {
 				if (i > j) {
-					b = particles.get(j);
-					totalEnergy -= g * a.mass * b.mass / distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ);
+					Particle b = particles.get(j);
+					energy -= g * a.mass * b.mass / distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ);
 				}
 			}
 		}
-		return totalEnergy;
+		return energy;
 	}
 
-	/**
-	 * Test method for symplectic integrators
-	 * 
-	 * @param args None defined
-	 */
-	public static void main (String[] args) {
-		Symplectic s = new Symplectic(THREE_BODY, STORMER_VERLET_4);
-		long n = 0;
-		double h0 = s.hamiltonian();
-		double hMin = h0;
-		double hMax = h0;
-		while (n <= s.iterations) {
-			s.integrator.solve(s, Q, P);
-			double hNow = s.hamiltonian();
-			double dH = hNow - h0;
-			if (hNow < hMin) {
-				hMin = hNow;
-			} else if (hNow > hMax) {
-				hMax = hNow;
-			}
-			if ((n % s.outputInterval) == 0) {
-				StringBuilder json = new StringBuilder("[");
-				for (Particle p : s.particles) {
-					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
-				}
-				System.out.println(json + "]");
-				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
-			}
-			n += 1;
-		}
-	}
+//	/**
+//	 * Test method for symplectic integrators
+//	 * 
+//	 * @param args None defined
+//	 */
+//	public static void main (String[] args) {
+//		Symplectic s = new Symplectic(THREE_BODY, STORMER_VERLET_4);
+//		long n = 0;
+//		double h0 = s.hamiltonian();
+//		double hMin = h0;
+//		double hMax = h0;
+//		while (n <= s.iterations) {
+//			s.integrator.solve(s, Q, P);
+//			double hNow = s.hamiltonian();
+//			double dH = hNow - h0;
+//			if (hNow < hMin) {
+//				hMin = hNow;
+//			} else if (hNow > hMax) {
+//				hMax = hNow;
+//			}
+//			if ((n % s.outputInterval) == 0) {
+//				StringBuilder json = new StringBuilder("[");
+//				for (Particle p : s.particles) {
+//					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
+//				}
+//				System.out.println(json + "]");
+//				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
+//			}
+//			n += 1;
+//		}
+//	}
 }

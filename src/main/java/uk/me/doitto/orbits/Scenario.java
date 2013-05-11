@@ -1,5 +1,9 @@
 package uk.me.doitto.orbits;
 
+import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_4;
+import static uk.me.doitto.orbits.PhaseSpace.P;
+import static uk.me.doitto.orbits.PhaseSpace.Q;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +42,7 @@ public enum Scenario {
 			g = 1.0;
 			ts = 0.001;
 			outputInterval = 1000;
-			simulationTime = 1.0e4;
+			simulationTime = 1.0e5;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.0, 0.19509, 0.0, 1.0));
 			bodies.add(new Particle(-0.07095, 0.0, 0.0, -0.2, -1.23187, 0.0, 1.0));
 			bodies.add(new Particle(-1.00496, 0.0, 0.0, 0.0, 1.03678, 0.0, 1.0));
@@ -90,4 +94,36 @@ public enum Scenario {
 	}
 	
 	public abstract void populate ();
+
+	/**
+	 * Test method for symplectic integrators
+	 * 
+	 * @param args None defined
+	 */
+	public static void main (String[] args) {
+		Symplectic s = new Symplectic(THREE_BODY, STORMER_VERLET_4);
+		long n = 0;
+		double h0 = s.hamiltonian();
+		double hMin = h0;
+		double hMax = h0;
+		while (n <= s.iterations) {
+			s.integrator.solve(s, Q, P);
+			double hNow = s.hamiltonian();
+			double dH = hNow - h0;
+			if (hNow < hMin) {
+				hMin = hNow;
+			} else if (hNow > hMax) {
+				hMax = hNow;
+			}
+			if ((n % s.outputInterval) == 0) {
+				StringBuilder json = new StringBuilder("[");
+				for (Particle p : s.particles) {
+					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
+				}
+				System.out.println(json + "]");
+				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
+			}
+			n += 1;
+		}
+	}
 }
