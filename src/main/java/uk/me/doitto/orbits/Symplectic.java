@@ -13,15 +13,15 @@ import static uk.me.doitto.orbits.Scenario.*;
  */
 public class Symplectic {
 	
-	double iterations = 0.0;
+	double iterations;
 	
-	double g = 0.0;
+	double g;
 	
-	double timeStep = 0.0;
+	double timeStep;
 	
 	int np = 0;
 	
-	List<Particle> particles = new ArrayList<Particle>();
+	List<Particle> particles;
 	
 	Integrator integrator;
 	
@@ -90,11 +90,11 @@ public class Symplectic {
 				hMax = hNow;
 			}
 			if ((n % 1000) == 0) {
-				StringBuilder json = new StringBuilder("[");
-				for (Particle p : s.particles) {
-					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
-				}
-				System.out.println(json + "]");
+//				StringBuilder json = new StringBuilder("[");
+//				for (Particle p : s.particles) {
+//					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
+//				}
+//				System.out.println(json + "]");
 				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
 			}
 			n += 1;

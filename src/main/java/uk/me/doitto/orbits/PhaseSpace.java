@@ -5,37 +5,31 @@ package uk.me.doitto.orbits;
  * 
  * Definitions of the two Hamiltonian coordinates, position and momentum, specifically their update methods
  */
-public enum PhaseSpace {
-	// Position
-	Q {
+public enum PhaseSpace {	
+	Q {  // Position
 		@Override
 		public void update (Symplectic s, double c) {
-			Particle a;
-			double tmp;
 			for (int i = 0; i < s.np; i++) {
-				a = s.particles.get(i);
-				tmp = c / a.mass * s.timeStep;
+				Particle a = s.particles.get(i);
+				double tmp = c / a.mass * s.timeStep;
 				a.qX += a.pX * tmp;
 				a.qY += a.pY * tmp;
 				a.qZ += a.pZ * tmp;
 			}
 		}
-	},
-	// Momentum
-	P {
+	},	
+	P {  // Momentum
 		@Override
 		public void update (Symplectic s, double c) {
-			Particle a, b;
-			double tmp, dPx, dPy, dPz;
 			for (int i = 0; i < s.np; i++) {
-				a = s.particles.get(i);
+				Particle a = s.particles.get(i);
 				for (int j = 0; j < s.np; j++) {
-					b = s.particles.get(j);
+					Particle b = s.particles.get(j);
 					if (i > j) {
-						tmp = - c * s.g * a.mass * b.mass / Math.pow(s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * s.timeStep;
-						dPx = (b.qX - a.qX) * tmp;
-						dPy = (b.qY - a.qY) * tmp;
-						dPz = (b.qZ - a.qZ) * tmp;
+						double tmp = - c * s.g * a.mass * b.mass / Math.pow(s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * s.timeStep;
+						double dPx = (b.qX - a.qX) * tmp;
+						double dPy = (b.qY - a.qY) * tmp;
+						double dPz = (b.qZ - a.qZ) * tmp;
 						a.pX -= dPx;
 						a.pY -= dPy;
 						a.pZ -= dPz;
