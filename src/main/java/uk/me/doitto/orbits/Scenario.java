@@ -42,7 +42,7 @@ public enum Scenario {
 			g = 1.0;
 			ts = 0.001;
 			outputInterval = 1000;
-			simulationTime = 1.0e5;
+			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.0, 0.19509, 0.0, 1.0));
 			bodies.add(new Particle(-0.07095, 0.0, 0.0, -0.2, -1.23187, 0.0, 1.0));
 			bodies.add(new Particle(-1.00496, 0.0, 0.0, 0.0, 1.03678, 0.0, 1.0));

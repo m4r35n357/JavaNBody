@@ -68,36 +68,4 @@ public class Symplectic {
 		}
 		return energy;
 	}
-
-//	/**
-//	 * Test method for symplectic integrators
-//	 * 
-//	 * @param args None defined
-//	 */
-//	public static void main (String[] args) {
-//		Symplectic s = new Symplectic(THREE_BODY, STORMER_VERLET_4);
-//		long n = 0;
-//		double h0 = s.hamiltonian();
-//		double hMin = h0;
-//		double hMax = h0;
-//		while (n <= s.iterations) {
-//			s.integrator.solve(s, Q, P);
-//			double hNow = s.hamiltonian();
-//			double dH = hNow - h0;
-//			if (hNow < hMin) {
-//				hMin = hNow;
-//			} else if (hNow > hMax) {
-//				hMax = hNow;
-//			}
-//			if ((n % s.outputInterval) == 0) {
-//				StringBuilder json = new StringBuilder("[");
-//				for (Particle p : s.particles) {
-//					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
-//				}
-//				System.out.println(json + "]");
-//				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
-//			}
-//			n += 1;
-//		}
-//	}
 }

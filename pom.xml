@@ -127,7 +127,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>uk.me.doitto.orbits.Symplectic</mainClass>
+							<mainClass>uk.me.doitto.orbits.Scenario</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
