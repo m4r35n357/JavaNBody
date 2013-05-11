@@ -31,7 +31,7 @@ public enum Scenario {
 			g = 0.05;
 			ts = 0.001;
 			outputInterval = 1000;
-			simulationTime = 1.0e5;
+			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.0, 2.0, 0.0, 0.1, 0.1, 0.0, 5.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
 		}
@@ -54,7 +54,7 @@ public enum Scenario {
 			g = 3.5;
 			ts = 0.001;
 			outputInterval = 1000;
-			simulationTime = 1.0e5;
+			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
 			bodies.add(new Particle(-1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0));
 			bodies.add(new Particle(1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0));
@@ -94,7 +94,7 @@ public enum Scenario {
 	}
 	
 	public abstract void populate ();
-
+	
 	/**
 	 * Test method for symplectic integrators
 	 * 
@@ -109,7 +109,7 @@ public enum Scenario {
 		while (n <= s.iterations) {
 			s.integrator.solve(s, Q, P);
 			double hNow = s.hamiltonian();
-			double dH = hNow - h0;
+			double dH = (hNow - h0) > 0.0 ? hNow - h0 : 1.0e-18;
 			if (hNow < hMin) {
 				hMin = hNow;
 			} else if (hNow > hMax) {
