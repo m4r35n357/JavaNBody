@@ -19,6 +19,8 @@ public class Symplectic {
 	
 	double timeStep;
 	
+	int outputInterval;
+	
 	int np = 0;
 	
 	List<Particle> particles;
@@ -30,16 +32,18 @@ public class Symplectic {
 		this.np = ic.bodies.size();
 		this.g = ic.g;
 		this.timeStep = ic.ts;
+		this.outputInterval = ic.outputInterval;
 		this.iterations = ic.simulationTime / ic.ts;
 		this.integrator = integrator;
 	}
 	
-	public Symplectic (double g, double simulationTime, double timeStep, List<Particle> bodies, String integrator) {
+	public Symplectic (double g, double simulationTime, double timeStep, int outputInterval, List<Particle> bodies, String integrator) {
 		// destroy reference to input array so the client can't change i
 		this.particles = new ArrayList<Particle>(bodies);
 		this.np = bodies.size();
 		this.g = g;
 		this.timeStep = timeStep;
+		this.outputInterval = outputInterval;
 		this.iterations = simulationTime / timeStep;
 		this.integrator = Integrator.valueOf(integrator);
 	}
@@ -89,12 +93,12 @@ public class Symplectic {
 			} else if (hNow > hMax) {
 				hMax = hNow;
 			}
-			if ((n % 1000) == 0) {
-//				StringBuilder json = new StringBuilder("[");
-//				for (Particle p : s.particles) {
-//					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
-//				}
-//				System.out.println(json + "]");
+			if ((n % s.outputInterval) == 0) {
+				StringBuilder json = new StringBuilder("[");
+				for (Particle p : s.particles) {
+					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
+				}
+				System.out.println(json + "]");
 				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
 			}
 			n += 1;

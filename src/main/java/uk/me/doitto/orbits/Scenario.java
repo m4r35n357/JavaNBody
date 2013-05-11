@@ -14,6 +14,7 @@ public enum Scenario {
 		public void populate () {
 			g = 0.05;
 			ts = 0.001;
+			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.1, 0.1, 0.0, 1.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
@@ -25,6 +26,7 @@ public enum Scenario {
 		public void populate () {
 			g = 0.05;
 			ts = 0.001;
+			outputInterval = 1000;
 			simulationTime = 1.0e5;
 			bodies.add(new Particle(1.0, 2.0, 0.0, 0.1, 0.1, 0.0, 5.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
@@ -35,6 +37,7 @@ public enum Scenario {
 		public void populate () {
 			g = 1.0;
 			ts = 0.001;
+			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.0, 0.19509, 0.0, 1.0));
 			bodies.add(new Particle(-0.07095, 0.0, 0.0, -0.2, -1.23187, 0.0, 1.0));
@@ -46,6 +49,7 @@ public enum Scenario {
 		public void populate () {
 			g = 3.5;
 			ts = 0.001;
+			outputInterval = 1000;
 			simulationTime = 1.0e5;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
 			bodies.add(new Particle(-1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0));
@@ -58,6 +62,7 @@ public enum Scenario {
 		public void populate () {
 			g = 0.05;
 			ts = 0.001;
+			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0));
 			bodies.add(new Particle(0.0, 4.5, 0.4, -0.2, 0.0, 1.8, 2.0));
@@ -75,6 +80,8 @@ public enum Scenario {
 	double simulationTime = 0.0;
 
 	double ts = 0.0;
+	
+	int outputInterval;
 	
 	List<Particle> bodies = new ArrayList<Particle>();
 
