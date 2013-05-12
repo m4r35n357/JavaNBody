@@ -16,6 +16,8 @@ public class Symplectic {
 	
 	double timeStep;
 	
+	double errorLimit;
+	
 	int outputInterval;
 	
 	int np = 0;
@@ -29,17 +31,19 @@ public class Symplectic {
 		this.np = ic.bodies.size();
 		this.g = ic.g;
 		this.timeStep = ic.ts;
+		this.errorLimit = ic.errorLimit;
 		this.outputInterval = ic.outputInterval;
 		this.iterations = ic.simulationTime / ic.ts;
 		this.integrator = integrator;
 	}
 	
-	public Symplectic (double g, double simulationTime, double timeStep, int outputInterval, List<Particle> bodies, String integrator) {
+	public Symplectic (double g, double simulationTime, double timeStep, double errorLimit, int outputInterval, List<Particle> bodies, String integrator) {
 		// destroy reference to input array so the client can't change i
 		this.particles = new ArrayList<Particle>(bodies);
 		this.np = bodies.size();
 		this.g = g;
 		this.timeStep = timeStep;
+		this.errorLimit = errorLimit;
 		this.outputInterval = outputInterval;
 		this.iterations = simulationTime / timeStep;
 		this.integrator = Integrator.valueOf(integrator);

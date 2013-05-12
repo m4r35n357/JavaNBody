@@ -18,6 +18,7 @@ public enum Scenario {
 		public void populate () {
 			g = 0.05;
 			ts = 0.001;
+			errorLimit = -60.0;
 			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.1, 0.1, 0.0, 1.0));
@@ -30,6 +31,7 @@ public enum Scenario {
 		public void populate () {
 			g = 0.05;
 			ts = 0.001;
+			errorLimit = -60.0;
 			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.0, 2.0, 0.0, 0.1, 0.1, 0.0, 5.0));
@@ -41,6 +43,7 @@ public enum Scenario {
 		public void populate () {
 			g = 1.0;
 			ts = 0.001;
+			errorLimit = -60.0;
 			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.0, 0.19509, 0.0, 1.0));
@@ -53,6 +56,7 @@ public enum Scenario {
 		public void populate () {
 			g = 3.5;
 			ts = 0.001;
+			errorLimit = -60.0;
 			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
@@ -66,6 +70,7 @@ public enum Scenario {
 		public void populate () {
 			g = 0.05;
 			ts = 0.001;
+			errorLimit = -60.0;
 			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0));
@@ -85,6 +90,8 @@ public enum Scenario {
 
 	double ts = 0.0;
 	
+	double errorLimit;
+	
 	int outputInterval;
 	
 	List<Particle> bodies = new ArrayList<Particle>();
@@ -99,9 +106,10 @@ public enum Scenario {
 	 * Test method for symplectic integrators
 	 * 
 	 * @param args None defined
+	 * @throws Exception 
 	 */
 	public static void main (String[] args) {
-		Symplectic s = new Symplectic(THREE_BODY, STORMER_VERLET_4);
+		Symplectic s = new Symplectic(EIGHT_BODY, STORMER_VERLET_4);
 		long n = 0;
 		double h0 = s.hamiltonian();
 		double hMin = h0;
@@ -109,7 +117,8 @@ public enum Scenario {
 		while (n <= s.iterations) {
 			s.integrator.solve(s, Q, P);
 			double hNow = s.hamiltonian();
-			double dH = (hNow - h0) > 0.0 ? hNow - h0 : 1.0e-18;
+			double tmp = Math.abs(hNow - h0);
+			double dH = tmp > 0.0 ? tmp : 1.0e-18;
 			if (hNow < hMin) {
 				hMin = hNow;
 			} else if (hNow > hMax) {
@@ -121,7 +130,12 @@ public enum Scenario {
 					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
 				}
 				System.out.println(json + "]");
-				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, Math.abs(dH), 10.0 * Math.log10(Math.abs(dH / h0)));
+				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
+				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
+				if (dbValue > s.errorLimit) {
+					System.out.println("Hamiltonian error, giving up!");
+					return;
+				}
 			}
 			n += 1;
 		}
