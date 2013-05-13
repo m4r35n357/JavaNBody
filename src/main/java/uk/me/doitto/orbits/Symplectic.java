@@ -18,6 +18,8 @@ public class Symplectic {
 	
 	double errorLimit;
 	
+	double cogX, cogY, cogZ;
+	
 	int outputInterval;
 	
 	int np = 0;
@@ -72,4 +74,22 @@ public class Symplectic {
 		}
 		return energy;
 	}
+	
+	public void cog () {
+		double X = 0.0;
+		double Y = 0.0;
+		double Z = 0.0;
+		double mT = 0.0;
+		for (int i = 0; i < np; i++) {
+			Particle a = particles.get(i);
+			X += a.qX * a.mass;
+			Y += a.qY * a.mass;
+			Z += a.qZ * a.mass;
+			mT += a.mass;
+		}
+		cogX = X / mT;
+		cogY = Y / mT;
+		cogZ = Z / mT;
+	}
+
 }

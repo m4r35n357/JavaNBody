@@ -109,7 +109,7 @@ public enum Scenario {
 	 * @throws Exception 
 	 */
 	public static void main (String[] args) {
-		Symplectic s = new Symplectic(EIGHT_BODY, STORMER_VERLET_4);
+		Symplectic s = new Symplectic(THREE_BODY, STORMER_VERLET_4);
 		long n = 0;
 		double h0 = s.hamiltonian();
 		double hMin = h0;
@@ -131,7 +131,7 @@ public enum Scenario {
 				}
 				System.out.println(json + "]");
 				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
-				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBH%n", n * s.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
+				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBh%n", n * s.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
 				if (dbValue > s.errorLimit) {
 					System.out.println("Hamiltonian error, giving up!");
 					return;
