@@ -11,6 +11,7 @@ public enum Integrator {
 		public void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
 			first.update(s, 1.0);
 			second.update(s, 1.0);
+			s.cog();
 		}
 	},
 	STORMER_VERLET_2 {
@@ -19,6 +20,7 @@ public enum Integrator {
 			first.update(s, 0.5);
 			second.update(s, 1.0);
 			first.update(s, 0.5);
+			s.cog();
 		}
 	},
 	STORMER_VERLET_4 {
@@ -31,6 +33,7 @@ public enum Integrator {
 			first.update(s, -0.175603595979828830000000);
 			second.update(s, 1.351207191959657800000000);
 			first.update(s, 0.675603595979828900000000);
+			s.cog();
 		}
 	};
 
