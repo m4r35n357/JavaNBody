@@ -1,8 +1,6 @@
 package uk.me.doitto.orbits;
 
 import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_4;
-import static uk.me.doitto.orbits.PhaseSpace.P;
-import static uk.me.doitto.orbits.PhaseSpace.Q;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,14 +107,14 @@ public enum Scenario {
 	 * @throws Exception 
 	 */
 	public static void main (String[] args) {
-		Symplectic s = new Symplectic(THREE_BODY, STORMER_VERLET_4);
+		Symplectic scenario = new Symplectic(THREE_BODY, STORMER_VERLET_4);
 		long n = 0;
-		double h0 = s.hamiltonian();
+		double h0 = scenario.hamiltonian();
 		double hMin = h0;
 		double hMax = h0;
-		while (n <= s.iterations) {
-			s.integrator.solve(s, Q, P);
-			double hNow = s.hamiltonian();
+		while (n <= scenario.iterations) {
+			scenario.solveQP();
+			double hNow = scenario.hamiltonian();
 			double tmp = Math.abs(hNow - h0);
 			double dH = tmp > 0.0 ? tmp : 1.0e-18;
 			if (hNow < hMin) {
@@ -124,15 +122,15 @@ public enum Scenario {
 			} else if (hNow > hMax) {
 				hMax = hNow;
 			}
-			if ((n % s.outputInterval) == 0) {
+			if ((n % scenario.outputInterval) == 0) {
 				StringBuilder json = new StringBuilder("[");
-				for (Particle p : s.particles) {
+				for (Particle p : scenario.particles) {
 					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
 				}
 				System.out.println(json + "]");
 				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
-				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBh%n", n * s.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
-				if (dbValue > s.errorLimit) {
+				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBh%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
+				if (dbValue > scenario.errorLimit) {
 					System.out.println("Hamiltonian error, giving up!");
 					return;
 				}

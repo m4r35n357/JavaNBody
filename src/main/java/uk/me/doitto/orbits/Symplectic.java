@@ -10,23 +10,13 @@ import java.util.List;
  */
 public class Symplectic {
 	
-	double iterations;
+	double iterations, g, timeStep, errorLimit, cogX, cogY, cogZ;
 	
-	double g;
-	
-	double timeStep;
-	
-	double errorLimit;
-	
-	double cogX, cogY, cogZ;
-	
-	int outputInterval;
-	
-	int np = 0;
+	int outputInterval, np;
 	
 	List<Particle> particles;
 	
-	Integrator integrator;
+	private Integrator integrator;
 	
 	public Symplectic (Scenario ic, Integrator integrator) {
 		this.particles = ic.bodies;
@@ -40,7 +30,6 @@ public class Symplectic {
 	}
 	
 	public Symplectic (double g, double simulationTime, double timeStep, double errorLimit, int outputInterval, List<Particle> bodies, String integrator) {
-		// destroy reference to input array so the client can't change i
 		this.particles = new ArrayList<Particle>(bodies);
 		this.np = bodies.size();
 		this.g = g;
@@ -49,11 +38,6 @@ public class Symplectic {
 		this.outputInterval = outputInterval;
 		this.iterations = simulationTime / timeStep;
 		this.integrator = Integrator.valueOf(integrator);
-	}
-
-	public List<Particle> getParticles () {
-		// return a copy
-		return new ArrayList<Particle>(particles);
 	}
 
 	double distance (double xA, double yA, double zA, double xB, double yB, double zB) {
@@ -75,7 +59,7 @@ public class Symplectic {
 		return energy;
 	}
 	
-	public void cog () {
+	void cog () {
 		double X = 0.0;
 		double Y = 0.0;
 		double Z = 0.0;
@@ -91,5 +75,12 @@ public class Symplectic {
 		cogY = Y / mT;
 		cogZ = Z / mT;
 	}
-
+	
+	public void solveQP () {
+		this.integrator.solve(this, PhaseSpace.Q, PhaseSpace.P);
+	}
+	
+	public void solvePQ () {
+		this.integrator.solve(this, PhaseSpace.P, PhaseSpace.Q);
+	}
 }

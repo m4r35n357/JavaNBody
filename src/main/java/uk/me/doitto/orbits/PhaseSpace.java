@@ -8,7 +8,7 @@ package uk.me.doitto.orbits;
 public enum PhaseSpace {	
 	Q {  // Position
 		@Override
-		public void update (Symplectic s, double c) {
+		void update (Symplectic s, double c) {
 			for (int i = 0; i < s.np; i++) {
 				Particle a = s.particles.get(i);
 				double tmp = c / a.mass * s.timeStep;
@@ -20,7 +20,7 @@ public enum PhaseSpace {
 	},	
 	P {  // Momentum
 		@Override
-		public void update (Symplectic s, double c) {
+		void update (Symplectic s, double c) {
 			for (int i = 0; i < s.np; i++) {
 				Particle a = s.particles.get(i);
 				for (int j = 0; j < s.np; j++) {
@@ -42,5 +42,5 @@ public enum PhaseSpace {
 		}
 	};
 
-	public abstract void update (Symplectic symplectic, double coefficient);
+	abstract void update (Symplectic symplectic, double coefficient);
 }
