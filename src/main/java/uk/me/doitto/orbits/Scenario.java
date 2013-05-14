@@ -17,7 +17,6 @@ public enum Scenario {
 			g = 0.05;
 			ts = 0.001;
 			errorLimit = -60.0;
-			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.1, 0.1, 0.0, 1.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
@@ -30,7 +29,6 @@ public enum Scenario {
 			g = 0.05;
 			ts = 0.001;
 			errorLimit = -60.0;
-			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.0, 2.0, 0.0, 0.1, 0.1, 0.0, 5.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
@@ -42,7 +40,6 @@ public enum Scenario {
 			g = 1.0;
 			ts = 0.001;
 			errorLimit = -60.0;
-			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.0, 0.19509, 0.0, 1.0));
 			bodies.add(new Particle(-0.07095, 0.0, 0.0, -0.2, -1.23187, 0.0, 1.0));
@@ -53,10 +50,9 @@ public enum Scenario {
 		@Override
 		public void populate () {
 			g = 3.51;
-			ts = 0.001;
+			ts = 0.01;
 			errorLimit = -60.0;
-			outputInterval = 1000;
-			simulationTime = 1.0e5;
+			simulationTime = 1.0e3;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
 			bodies.add(new Particle(-1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0));
 			bodies.add(new Particle(1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0));
@@ -69,7 +65,6 @@ public enum Scenario {
 			g = 0.05;
 			ts = 0.001;
 			errorLimit = -60.0;
-			outputInterval = 1000;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0));
 			bodies.add(new Particle(0.0, 4.5, 0.4, -0.2, 0.0, 1.8, 2.0));
@@ -119,7 +114,7 @@ public enum Scenario {
 			if ((n % scenario.outputInterval) == 0) {
 				System.out.println(scenario.particlesJson());
 				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
-				System.err.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBh%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
+				System.err.printf("t:%9.2f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBh%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
 				if (dbValue > scenario.errorLimit) {
 					System.err.println("Hamiltonian error, giving up!");
 					return;
