@@ -10,11 +10,13 @@ import java.util.List;
  */
 public class Symplectic {
 	
-	double iterations, g, timeStep, errorLimit, cogX, cogY, cogZ;
+	public final double iterations, g, timeStep, errorLimit;
 	
-	int outputInterval, np;
+	public double cogX, cogY, cogZ;
 	
-	List<Particle> particles;
+	public int outputInterval, np;
+	
+	public List<Particle> particles;
 	
 	private Integrator integrator;
 	

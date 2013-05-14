@@ -52,11 +52,11 @@ public enum Scenario {
 	FOUR_BODY {
 		@Override
 		public void populate () {
-			g = 3.5;
-			ts = 0.001;
+			g = 3.51;
+			ts = 0.01;
 			errorLimit = -60.0;
 			outputInterval = 1000;
-			simulationTime = 1.0e4;
+			simulationTime = 1.0e5;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
 			bodies.add(new Particle(-1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0));
 			bodies.add(new Particle(1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0));
@@ -82,13 +82,7 @@ public enum Scenario {
 		}
 	};
 	
-	double g = 0.0;
-	
-	double simulationTime = 0.0;
-
-	double ts = 0.0;
-	
-	double errorLimit;
+	double g, simulationTime, ts, errorLimit;
 	
 	int outputInterval;
 	
@@ -107,7 +101,7 @@ public enum Scenario {
 	 * @throws Exception 
 	 */
 	public static void main (String[] args) {
-		Symplectic scenario = new Symplectic(THREE_BODY, STORMER_VERLET_4);
+		Symplectic scenario = new Symplectic(FOUR_BODY, STORMER_VERLET_4);
 		long n = 0;
 		double h0 = scenario.hamiltonian();
 		double hMin = h0;
