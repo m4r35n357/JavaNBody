@@ -11,7 +11,7 @@ public class Particle implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public double qX, qY, qZ, pX, pY, pZ, mass;
+	double qX, qY, qZ, pX, pY, pZ, mass;
 	
 	public Particle (double qX, double qY, double qZ, double pX, double pY, double pZ, double mass) {
 		this.qX = qX;
@@ -21,5 +21,8 @@ public class Particle implements Serializable {
 		this.pY = pY;
 		this.pZ = pZ;
 		this.mass = mass;
+	}
+	public String toString () {
+		return "{\"Qx\":" + this.qX + ",\"Qy\":" + this.qY + ",\"Qz\":" + this.qZ + ",\"Px\":" + this.pX + ",\"Py\":" + this.pY + ",\"Pz\":" + this.pZ + "},";
 	}
 }

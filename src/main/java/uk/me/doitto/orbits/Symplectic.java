@@ -14,11 +14,11 @@ public class Symplectic {
 	
 	public double cogX, cogY, cogZ;
 	
-	public int outputInterval, np;
+	public final int outputInterval, np;
 	
-	public List<Particle> particles;
+	public final List<Particle> particles;
 	
-	private Integrator integrator;
+	private final Integrator integrator;
 	
 	public Symplectic (Scenario ic, Integrator integrator) {
 		this.particles = ic.bodies;

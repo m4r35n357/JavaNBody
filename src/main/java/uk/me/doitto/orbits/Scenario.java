@@ -53,7 +53,7 @@ public enum Scenario {
 		@Override
 		public void populate () {
 			g = 3.51;
-			ts = 0.01;
+			ts = 0.001;
 			errorLimit = -60.0;
 			outputInterval = 1000;
 			simulationTime = 1.0e5;
