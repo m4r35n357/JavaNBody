@@ -85,4 +85,12 @@ public class Symplectic {
 	public void solvePQ () {
 		this.integrator.solve(this, PhaseSpace.P, PhaseSpace.Q);
 	}
+	
+	public String particlesJson () {
+		StringBuilder json = new StringBuilder("[");
+		for (Particle p : particles) {
+			json.append(p.toString());
+		}
+		return (json + "]");
+	}
 }

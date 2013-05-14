@@ -117,11 +117,7 @@ public enum Scenario {
 				hMax = hNow;
 			}
 			if ((n % scenario.outputInterval) == 0) {
-				StringBuilder json = new StringBuilder("[");
-				for (Particle p : scenario.particles) {
-					json.append("{\"Qx\":" + p.qX + ",\"Qy\":" + p.qY + ",\"Qz\":" + p.qZ + ",\"Px\":" + p.pX + ",\"Py\":" + p.pY + ",\"Pz\":" + p.pZ + "},");
-				}
-				System.out.println(json + "]");
+				System.out.println(scenario.particlesJson());
 				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
 				System.out.printf("t:%7.0f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBh%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
 				if (dbValue > scenario.errorLimit) {
