@@ -1,6 +1,7 @@
 package uk.me.doitto.orbits;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -88,8 +89,10 @@ public class Symplectic {
 	
 	public String particlesJson () {
 		StringBuilder json = new StringBuilder("[");
-		for (Particle p : particles) {
-			json.append(p.toString());
+		Iterator<Particle> p = particles.iterator();
+		json.append(p.next().toString());
+		while (p.hasNext()) {
+			json.append(',' + p.next().toString());
 		}
 		return (json + "]");
 	}
