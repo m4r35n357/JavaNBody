@@ -49,7 +49,7 @@ public enum Scenario {
 	FOUR_BODY {
 		@Override
 		public void populate () {
-			g = 3.51;
+			g = 3.50;
 			ts = 0.001;
 			errorLimit = -60.0;
 			simulationTime = 1.0e3;
@@ -96,7 +96,7 @@ public enum Scenario {
 	 * @throws Exception 
 	 */
 	public static void main (String[] args) {
-		Symplectic scenario = new Symplectic(THREE_BODY, STORMER_VERLET_6);
+		Symplectic scenario = new Symplectic(FOUR_BODY, STORMER_VERLET_6);
 		long n = 0;
 		double h0 = scenario.hamiltonian();
 		double hMin = h0;
@@ -114,7 +114,7 @@ public enum Scenario {
 			if ((n % scenario.outputInterval) == 0) {
 				System.out.println(scenario.particlesJson());
 				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
-				System.err.printf("t:%9.2f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBh%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
+				System.err.printf("t:%9.2f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %6.1f dBh0%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
 				if (dbValue > scenario.errorLimit) {
 					System.err.println("Hamiltonian error, giving up!");
 					return;
