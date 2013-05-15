@@ -1,6 +1,6 @@
 package uk.me.doitto.orbits;
 
-import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_4;
+import static uk.me.doitto.orbits.Integrator.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public enum Scenario {
 			g = 1.0;
 			ts = 0.001;
 			errorLimit = -60.0;
-			simulationTime = 1.0e4;
+			simulationTime = 1.0e3;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.0, 0.19509, 0.0, 1.0));
 			bodies.add(new Particle(-0.07095, 0.0, 0.0, -0.2, -1.23187, 0.0, 1.0));
 			bodies.add(new Particle(-1.00496, 0.0, 0.0, 0.0, 1.03678, 0.0, 1.0));
@@ -50,7 +50,7 @@ public enum Scenario {
 		@Override
 		public void populate () {
 			g = 3.51;
-			ts = 0.01;
+			ts = 0.001;
 			errorLimit = -60.0;
 			simulationTime = 1.0e3;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
@@ -96,7 +96,7 @@ public enum Scenario {
 	 * @throws Exception 
 	 */
 	public static void main (String[] args) {
-		Symplectic scenario = new Symplectic(FOUR_BODY, STORMER_VERLET_4);
+		Symplectic scenario = new Symplectic(THREE_BODY, STORMER_VERLET_8);
 		long n = 0;
 		double h0 = scenario.hamiltonian();
 		double hMin = h0;
