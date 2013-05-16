@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class Symplectic {
 	
+	private final static double OUTPUT_TIME_GRANULARITY = 0.01;
+	
 	public final double iterations, g, timeStep, errorLimit;
 	
 	public final int outputInterval, np;
@@ -25,7 +27,7 @@ public class Symplectic {
 		this.g = ic.g;
 		this.timeStep = ic.ts;
 		this.errorLimit = ic.errorLimit;
-		this.outputInterval = (int) Math.round(0.01 / ic.ts);
+		this.outputInterval = (int) Math.round(OUTPUT_TIME_GRANULARITY / ic.ts);
 		this.iterations = ic.simulationTime / ic.ts;
 		this.integrator = integrator;
 	}
@@ -36,7 +38,7 @@ public class Symplectic {
 		this.g = g;
 		this.timeStep = timeStep;
 		this.errorLimit = errorLimit;
-		this.outputInterval = (int) Math.round(0.01 / timeStep);
+		this.outputInterval = (int) Math.round(OUTPUT_TIME_GRANULARITY / timeStep);
 		this.iterations = simulationTime / timeStep;
 		this.integrator = Integrator.valueOf(integrator);
 	}
