@@ -13,8 +13,6 @@ public class Symplectic {
 	
 	public final double iterations, g, timeStep, errorLimit;
 	
-	public double cogX, cogY, cogZ;
-	
 	public final int outputInterval, np;
 	
 	public final List<Particle> particles;
@@ -60,23 +58,6 @@ public class Symplectic {
 			}
 		}
 		return energy;
-	}
-	
-	void cog () {
-		double X = 0.0;
-		double Y = 0.0;
-		double Z = 0.0;
-		double mT = 0.0;
-		for (int i = 0; i < np; i++) {
-			Particle a = particles.get(i);
-			X += a.qX * a.mass;
-			Y += a.qY * a.mass;
-			Z += a.qZ * a.mass;
-			mT += a.mass;
-		}
-		cogX = X / mT;
-		cogY = Y / mT;
-		cogZ = Z / mT;
 	}
 	
 	public void solveQP () {
