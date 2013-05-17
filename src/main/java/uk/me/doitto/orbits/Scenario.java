@@ -38,7 +38,7 @@ public enum Scenario {
 		@Override
 		public void populate () {
 			g = 1.0;
-			ts = 0.00005;
+			ts = 0.001;
 			errorLimit = -60.0;
 			simulationTime = 1.0e3;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.0, 0.19509, 0.0, 1.0));
