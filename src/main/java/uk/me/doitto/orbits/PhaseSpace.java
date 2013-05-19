@@ -24,8 +24,8 @@ public enum PhaseSpace {
 			for (int i = 0; i < s.np; i++) {
 				Particle a = s.particles.get(i);
 				for (int j = 0; j < s.np; j++) {
-					Particle b = s.particles.get(j);
 					if (i > j) {
+						Particle b = s.particles.get(j);
 						double tmp = - c * s.g * a.mass * b.mass / Math.pow(s.distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * s.timeStep;
 						double dPx = (b.qX - a.qX) * tmp;
 						double dPy = (b.qY - a.qY) * tmp;
