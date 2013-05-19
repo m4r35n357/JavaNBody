@@ -63,11 +63,11 @@ public class Symplectic {
 	}
 	
 	public void solveQP () {
-		this.integrator.solve(this, PhaseSpace.Q, PhaseSpace.P);
+		integrator.solve(this, PhaseSpace.Q, PhaseSpace.P);
 	}
 	
 	public void solvePQ () {
-		this.integrator.solve(this, PhaseSpace.P, PhaseSpace.Q);
+		integrator.solve(this, PhaseSpace.P, PhaseSpace.Q);
 	}
 	
 	public String particlesJson () {

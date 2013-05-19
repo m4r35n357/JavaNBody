@@ -23,6 +23,6 @@ public class Particle implements Serializable {
 		this.mass = mass;
 	}
 	public String toString () {
-		return "{\"qX\":" + this.qX + ",\"qY\":" + this.qY + ",\"qZ\":" + this.qZ + ",\"pX\":" + this.pX + ",\"pY\":" + this.pY + ",\"pZ\":" + this.pZ + ",\"mass\":" + this.mass + "}";
+		return "{\"qX\":" + qX + ",\"qY\":" + qY + ",\"qZ\":" + qZ + ",\"pX\":" + pX + ",\"pY\":" + pY + ",\"pZ\":" + pZ + ",\"mass\":" + mass + "}";
 	}
 }
