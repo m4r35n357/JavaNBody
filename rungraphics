@@ -3,7 +3,7 @@
 d=${1:-data}
 p=${2:-progress}
 
-java -jar target/orbits-0.0.1-SNAPSHOT.jar>$d 2>$p &
+java -jar target/orbits-0.0.1-SNAPSHOT.jar >$d 2>$p &
 sleep 1
 ~/projects/Python/NBody3D/filegraphics.py $d $p
 
