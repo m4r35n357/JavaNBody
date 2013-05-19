@@ -15,7 +15,7 @@ public enum Scenario {
 		@Override
 		public void populate () {
 			g = 0.05;
-			ts = 0.001;
+			ts = 0.01;
 			errorLimit = -60.0;
 			simulationTime = 1.0e3;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.1, 0.1, 0.0, 1.0));
@@ -27,7 +27,7 @@ public enum Scenario {
 		@Override
 		public void populate () {
 			g = 0.05;
-			ts = 0.001;
+			ts = 0.01;
 			errorLimit = -60.0;
 			simulationTime = 1.0e4;
 			bodies.add(new Particle(1.0, 2.0, 0.0, 0.1, 0.1, 0.0, 5.0));
@@ -38,7 +38,7 @@ public enum Scenario {
 		@Override
 		public void populate () {
 			g = 1.0;
-			ts = 0.001;
+			ts = 0.01;
 			errorLimit = -60.0;
 			simulationTime = 1.0e3;
 			bodies.add(new Particle(1.07590, 0.0, 0.0, 0.0, 0.19509, 0.0, 1.0));
@@ -50,7 +50,7 @@ public enum Scenario {
 		@Override
 		public void populate () {
 			g = 3.50;
-			ts = 0.001;
+			ts = 0.01;
 			errorLimit = -60.0;
 			simulationTime = 1.0e3;
 			bodies.add(new Particle(1.0, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0));
@@ -63,7 +63,7 @@ public enum Scenario {
 		@Override
 		public void populate () {
 			g = 0.05;
-			ts = 0.001;
+			ts = 0.01;
 			errorLimit = -60.0;
 			simulationTime = 1.0e3;
 			bodies.add(new Particle(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0));
