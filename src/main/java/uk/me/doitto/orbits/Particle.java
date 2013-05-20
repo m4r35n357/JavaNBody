@@ -28,7 +28,7 @@ public class Particle implements Serializable {
 	 * @return the JSON string
 	 */
 	public String toString () {
-		return String.format("{\"qX\":%.6e,\"qY\":%.6e,\"qZ\":%.6e,\"pX\":%.6e,\"pY\":%.6e,\"pZ\":%.6e,\"mass\": %.3e}", qX, qY, qZ, pX, pY, pZ, mass);
+		return String.format("{\"qX\":%.6e,\"qY\":%.6e,\"qZ\":%.6e,\"pX\":%.6e,\"pY\":%.6e,\"pZ\":%.6e,\"mass\":%.3e}", qX, qY, qZ, pX, pY, pZ, mass);
 //		return "{\"qX\":" + qX + ",\"qY\":" + qY + ",\"qZ\":" + qZ + ",\"pX\":" + pX + ",\"pY\":" + pY + ",\"pZ\":" + pZ + ",\"mass\":" + mass + "}";
 	}
 }
