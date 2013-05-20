@@ -114,8 +114,7 @@ public enum Scenario {
 			if ((n % scenario.outputInterval) == 0) {
 				System.out.println(scenario.particlesJson());
 				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
-				System.err.printf("t:%.2f, H: %.9e, H0: %.9e, H-: %.9e, H+: %.9e, E: %.1e, ER: %.1f dBh0%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
-//				System.err.println("t:" + n * scenario.timeStep + ", H: " + hNow + ", H0: " + h0 + ", H-: " + hMin + ", H+: " + hMax + ", E: " + dH + ", ER: " + dbValue + " dBh0");
+				System.err.printf("t:%.2f, H:%.9e, H0:%.9e, H-:%.9e, H+:%.9e, E:%.1e, ER:%.1fdBh0%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
 				if (dbValue > scenario.errorLimit) {
 					System.err.println("Hamiltonian error, giving up!");
 					return;
