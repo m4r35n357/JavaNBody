@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author ian
- *
+ * <p>
  * Holds per-particle data
  */
 public class Particle implements Serializable {
@@ -22,7 +22,13 @@ public class Particle implements Serializable {
 		this.pZ = pZ;
 		this.mass = mass;
 	}
+	
+	/**
+	 * Writes out current particle state as JSON-formatted text
+	 * @return the JSON string
+	 */
 	public String toString () {
-		return "{\"qX\":" + qX + ",\"qY\":" + qY + ",\"qZ\":" + qZ + ",\"pX\":" + pX + ",\"pY\":" + pY + ",\"pZ\":" + pZ + ",\"mass\":" + mass + "}";
+		return String.format("{\"qX\":%.18f,\"qY\":%.18f,\"qZ\":%.18f,\"pX\":%.18f,\"pY\":%.18f,\"pZ\":%.18f,\"mass\": %3.1f}", qX, qY, qZ, pX, pY, pZ, mass);
+//		return "{\"qX\":" + qX + ",\"qY\":" + qY + ",\"qZ\":" + qZ + ",\"pX\":" + pX + ",\"pY\":" + pY + ",\"pZ\":" + pZ + ",\"mass\":" + mass + "}";
 	}
 }

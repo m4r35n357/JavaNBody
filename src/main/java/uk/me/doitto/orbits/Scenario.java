@@ -29,7 +29,7 @@ public enum Scenario {
 			g = 0.05;
 			ts = 0.01;
 			errorLimit = -60.0;
-			simulationTime = 1.0e4;
+			simulationTime = 1.0e3;
 			bodies.add(new Particle(1.0, 2.0, 0.0, 0.1, 0.1, 0.0, 5.0));
 			bodies.add(new Particle(2.0, 1.0, 0.0, -0.1, -0.1, 0.0, 1.0));
 		}
@@ -96,7 +96,7 @@ public enum Scenario {
 	 * @throws Exception 
 	 */
 	public static void main (String[] args) {
-		Symplectic scenario = new Symplectic(FOUR_BODY, STORMER_VERLET_6);
+		Symplectic scenario = new Symplectic(THREE_BODY, STORMER_VERLET_6);
 		long n = 0;
 		double h0 = scenario.hamiltonian();
 		double hMin = h0;

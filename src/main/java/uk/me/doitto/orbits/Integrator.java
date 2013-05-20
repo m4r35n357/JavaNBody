@@ -2,10 +2,13 @@ package uk.me.doitto.orbits;
 
 /**
  * @author ian
- * 
+ * <p>
  * Symplectic integrators of various orders and types
  */
 public enum Integrator {
+	/**
+	 * Euler 1st-order
+	 */
 	EULER {
 		@Override
 		void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
@@ -13,12 +16,18 @@ public enum Integrator {
 			second.update(s, 1.0);
 		}
 	},
+	/**
+	 * Stormer-Verlet 2nd-order
+	 */
 	STORMER_VERLET_2 {
 		@Override
 		void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
 			symplectic2 (s, first, second, 1.0);
 		}
 	},
+	/**
+	 * Yoshida 4th-order
+	 */
 	STORMER_VERLET_4 {
 		@Override
 		void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
@@ -27,6 +36,9 @@ public enum Integrator {
 			symplectic2(s, first, second, 1.351207191959657);
 		}
 	},
+	/**
+	 * Yoshida 6th-order
+	 */
 	STORMER_VERLET_6 {
 		@Override
 		void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
@@ -39,6 +51,9 @@ public enum Integrator {
 			symplectic2(s, first, second, 0.784513610477560e0);
 		}
 	},
+	/**
+	 * Yoshida 8th-order
+	 */
 	STORMER_VERLET_8 {
 		@Override
 		void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
@@ -60,11 +75,20 @@ public enum Integrator {
 		}
 	};
 
+	/**
+	 * Basic 2nd-order Stormer-Verlet step which is composed into higher order methods
+	 */
 	protected final void symplectic2 (Symplectic s, PhaseSpace first, PhaseSpace second, double step) {
 		first.update(s, 0.5 * step);
 		second.update(s, step);
 		first.update(s, 0.5 * step);
 	}
 	
+	/**
+	 * Perform one iteration step for the configured integrator
+	 * @param s the Symplectic instance
+	 * @param first the "outer" update
+	 * @param second the "middle" update
+	 */
 	abstract void solve (Symplectic s, PhaseSpace first, PhaseSpace second);
 }

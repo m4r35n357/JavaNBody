@@ -2,11 +2,16 @@ package uk.me.doitto.orbits;
 
 /**
  * @author ian
- * 
- * Definitions of the two Hamiltonian coordinates, position and momentum, specifically their update methods
+ * <p>
+ * Definitions of the two Hamiltonian coordinates; position and momentum, specifically their update methods
  */
 public enum PhaseSpace {	
-	Q {  // Position
+	/**
+	 * Position
+	 * <p>
+	 * update implements dH/dp, which in this case is a function of p only
+	 */
+	Q {
 		@Override
 		void update (Symplectic s, double c) {
 			for (int i = 0; i < s.np; i++) {
@@ -18,7 +23,10 @@ public enum PhaseSpace {
 			}
 		}
 	},	
-	P {  // Momentum
+	/**
+	 * Momentum, update implements -dH/dq, which in this case is a function of q only
+	 */
+	P {
 		@Override
 		void update (Symplectic s, double c) {
 			for (int i = 0; i < s.np; i++) {
@@ -42,5 +50,10 @@ public enum PhaseSpace {
 		}
 	};
 
-	abstract void update (Symplectic symplectic, double coefficient);
+	/**
+	 * Update one component of the system state; either position or momentum
+	 * @param s the Symplectic instance
+	 * @param coefficient the Yoshida numbers for composed Stormer-Verlet methods
+	 */
+	abstract void update (Symplectic s, double coefficient);
 }
