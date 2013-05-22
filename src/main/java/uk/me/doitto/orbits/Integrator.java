@@ -31,9 +31,11 @@ public enum Integrator {
 	STORMER_VERLET_4 {
 		@Override
 		void solve (Symplectic s, PhaseSpace first, PhaseSpace second) {
-			symplectic2(s, first, second, 1.351207191959657);
-			symplectic2(s, first, second, -1.702414383919315);
-			symplectic2(s, first, second, 1.351207191959657);
+			double qr2 = Math.pow(2.0, 1.0 / 3.0);
+			double gamma1 = 1.0 / (2.0 - qr2);
+			symplectic2(s, first, second, gamma1);
+			symplectic2(s, first, second, -qr2 * gamma1);
+			symplectic2(s, first, second, gamma1);
 		}
 	},
 	/**

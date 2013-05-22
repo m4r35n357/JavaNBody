@@ -96,7 +96,7 @@ public enum Scenario {
 	 * @throws Exception 
 	 */
 	public static void main (String[] args) {
-		Symplectic scenario = new Symplectic(THREE_BODY, STORMER_VERLET_10);
+		Symplectic scenario = new Symplectic(THREE_BODY, STORMER_VERLET_4);
 		long n = 0;
 		double h0 = scenario.hamiltonian();
 		double hMin = h0;
