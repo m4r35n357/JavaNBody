@@ -1,9 +1,11 @@
 #!/bin/sh
 
-d=${1:-data}
-p=${2:-progress}
+ic=${1:-''}
 
-time java -jar target/orbits-0.0.1-SNAPSHOT.jar >$d 2>$p &
+d='data'
+p='progress'
+
+time java -jar target/orbits-0.0.1-SNAPSHOT-jar-with-dependencies.jar $ic >$d 2>$p &
 sleep 1
 ~/projects/Python/NBody3D/filegraphics.py $d $p
 
