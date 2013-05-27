@@ -199,6 +199,7 @@ public class Symplectic {
 			System.err.println("Missing file name, giving up!");
 			return;
 		}
+		System.out.println(scenario.particlesJson());
 		long n = 0;
 		double h0 = scenario.hamiltonian();
 		double hMin = h0;
