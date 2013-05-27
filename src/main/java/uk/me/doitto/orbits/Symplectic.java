@@ -103,6 +103,43 @@ public class Symplectic {
 	}
 	
 	/**
+	 * Position update implements dH/dp, which in this case is a function of p only
+	 */
+	void updateQ (double c) {
+		for (int i = 0; i < np; i++) {
+			Particle a = particles.get(i);
+			double tmp = c / a.mass * timeStep;
+			a.qX += a.pX * tmp;
+			a.qY += a.pY * tmp;
+			a.qZ += a.pZ * tmp;
+		}
+	}
+	
+	/**
+	 * Momentum update implements -dH/dq, which in this case is a function of q only
+	 */
+	void updateP (double c) {
+		for (int i = 0; i < np; i++) {
+			Particle a = particles.get(i);
+			for (int j = 0; j < np; j++) {
+				if (i > j) {
+					Particle b = particles.get(j);
+					double tmp = - c * g * a.mass * b.mass / Math.pow(distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * timeStep;
+					double dPx = (b.qX - a.qX) * tmp;
+					double dPy = (b.qY - a.qY) * tmp;
+					double dPz = (b.qZ - a.qZ) * tmp;
+					a.pX -= dPx;
+					a.pY -= dPy;
+					a.pZ -= dPz;
+					b.pX += dPx;
+					b.pY += dPy;
+					b.pZ += dPz;
+				}
+			}
+		}
+	}
+
+	/**
 	 * "Position outside, momentum between" variant
 	 */
 	public void solve () {

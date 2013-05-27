@@ -12,8 +12,8 @@ public enum Integrator {
 	EULER {
 		@Override
 		void solve (Symplectic s) {
-			PhaseSpace.Q.update(s, 1.0);
-			PhaseSpace.P.update(s, 1.0);
+			s.updateQ(1.0);
+			s.updateP(1.0);
 		}
 	},
 	/**
@@ -123,9 +123,9 @@ public enum Integrator {
 	 * Basic 2nd-order Stormer-Verlet step which is composed into higher order methods
 	 */
 	protected final void sympBase (Symplectic s, double c) {
-		PhaseSpace.Q.update(s, c * 0.5);
-		PhaseSpace.P.update(s, c);
-		PhaseSpace.Q.update(s, c * 0.5);
+		s.updateQ(c * 0.5);
+		s.updateP(c);
+		s.updateQ(c * 0.5);
 	}
 	
 	/**
