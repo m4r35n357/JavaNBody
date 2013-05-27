@@ -108,15 +108,8 @@ public class Symplectic {
 	/**
 	 * "Position outside, momentum between" variant
 	 */
-	public void solveQP () {
-		integrator.solve(this, PhaseSpace.Q, PhaseSpace.P);
-	}
-	
-	/**
-	 * "Momentum outside, position between" variant (probably slightly slower, less accurate)
-	 */
-	public void solvePQ () {
-		integrator.solve(this, PhaseSpace.P, PhaseSpace.Q);
+	public void solve () {
+		integrator.solve(this);
 	}
 	
 	/**
@@ -172,7 +165,7 @@ public class Symplectic {
 		double hMin = h0;
 		double hMax = h0;
 		while (n <= scenario.iterations) {
-			scenario.solveQP();
+			scenario.solve();
 			double hNow = scenario.hamiltonian();
 			double tmp = Math.abs(hNow - h0);
 			double dH = tmp > 0.0 ? tmp : 1.0e-18;
