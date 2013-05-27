@@ -1,8 +1,18 @@
 package uk.me.doitto.orbits;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  * @author ian
@@ -36,9 +46,9 @@ public class Symplectic {
 	}
 	
 	/**
-	 * For calling from other languages, or remotes
+	 * For calling from JSON data
 	 */
-	public Symplectic (double g, double simulationTime, double timeStep, double errorLimit, List<Particle> bodies, String integrator) {
+	public Symplectic (double g, double simulationTime, double timeStep, double errorLimit, List<Particle> bodies, int integratorOrder) {
 		this.particles = new ArrayList<Particle>(bodies);
 		this.np = bodies.size();
 		this.g = g;
@@ -46,7 +56,29 @@ public class Symplectic {
 		this.errorLimit = errorLimit;
 		this.outputInterval = (int) Math.round(OUTPUT_TIME_GRANULARITY / timeStep);
 		this.iterations = simulationTime / timeStep;
-		this.integrator = Integrator.valueOf(integrator);
+		switch (integratorOrder) {
+		case 1:
+			this.integrator = Integrator.EULER;
+			break;
+		case 2:
+			this.integrator = Integrator.STORMER_VERLET_2;
+			break;
+		case 4:
+			this.integrator = Integrator.STORMER_VERLET_4;
+			break;
+		case 6:
+			this.integrator = Integrator.STORMER_VERLET_6;
+			break;
+		case 8:
+			this.integrator = Integrator.STORMER_VERLET_8;
+			break;
+		case 10:
+			this.integrator = Integrator.STORMER_VERLET_10;
+			break;
+		default:
+			this.integrator = Integrator.STORMER_VERLET_4;
+			break;
+		}
 	}
 
 	/**
@@ -108,5 +140,24 @@ public class Symplectic {
 			json.append(',' + p.next().toString());
 		}
 		return (json + "]");
+	}
+	
+	public static Symplectic icJson (String fileName) throws IOException {
+		BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(fileName)));
+		String data = "";
+		String line = bufferedReader.readLine();
+		while (line != null) {
+			data += line;
+			line = bufferedReader.readLine();
+		}
+		bufferedReader.close();
+		JSONObject ic = (JSONObject)JSONValue.parse(data);
+		@SuppressWarnings("unchecked")
+		List<JSONObject> particles = (JSONArray)ic.get("bodies");
+		List<Particle> bodies = new ArrayList<Particle>();
+		for (JSONObject p : particles) {
+			bodies.add(new Particle((Double)p.get("qX"), (Double)p.get("qY"), (Double)p.get("qZ"), (Double)p.get("pX"), (Double)p.get("pY"), (Double)p.get("pZ"), (Double)p.get("mass")));
+		}
+		return new Symplectic((Double)ic.get("g"), (Double)ic.get("simulationTime"), (Double)ic.get("timeStep"), (Double)ic.get("errorLimit"), bodies, ((Long)ic.get("integratorOrder")).intValue());
 	}
 }

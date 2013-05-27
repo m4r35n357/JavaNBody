@@ -2,6 +2,7 @@ package uk.me.doitto.orbits;
 
 import static uk.me.doitto.orbits.Integrator.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,10 +94,16 @@ public enum Scenario {
 	 * Test method for symplectic integrators
 	 * 
 	 * @param args None defined
+	 * @throws IOException 
 	 * @throws Exception 
 	 */
-	public static void main (String[] args) {
-		Symplectic scenario = new Symplectic(THREE_BODY, STORMER_VERLET_4);
+	public static void main (String[] args) throws IOException {
+		Symplectic scenario;
+		if (args.length == 1) {
+			scenario = Symplectic.icJson(args[0]);
+		} else {
+			scenario = new Symplectic(THREE_BODY, STORMER_VERLET_4);
+		}
 		long n = 0;
 		double h0 = scenario.hamiltonian();
 		double hMin = h0;
