@@ -26,11 +26,9 @@ import org.json.simple.JSONValue;
  */
 public class Symplectic {
 	
-	private final static double OUTPUT_TIME_GRANULARITY = 0.01;
-	
 	public final double iterations, g, timeStep, errorLimit;
 	
-	public final int outputInterval, np;
+	public final int np;
 	
 	public final List<Particle> particles;
 	
@@ -45,7 +43,6 @@ public class Symplectic {
 		this.g = g;
 		this.timeStep = timeStep;
 		this.errorLimit = errorLimit;
-		this.outputInterval = (int) Math.round(OUTPUT_TIME_GRANULARITY / timeStep);
 		this.iterations = simulationTime / timeStep;
 		switch (integratorOrder) {
 		case 1:
@@ -166,6 +163,7 @@ public class Symplectic {
 		double hMax = h0;
 		while (n <= scenario.iterations) {
 			scenario.solve();
+			System.out.println(scenario.particlesJson());
 			double hNow = scenario.hamiltonian();
 			double tmp = Math.abs(hNow - h0);
 			double dH = tmp > 0.0 ? tmp : 1.0e-18;
@@ -174,14 +172,11 @@ public class Symplectic {
 			} else if (hNow > hMax) {
 				hMax = hNow;
 			}
-			if ((n % scenario.outputInterval) == 0) {
-				System.out.println(scenario.particlesJson());
-				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
-				System.err.printf("t:%.2f, H:%.9e, H0:%.9e, H-:%.9e, H+:%.9e, ER:%.1fdBh0%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dbValue);
-				if (dbValue > scenario.errorLimit) {
-					System.err.println("Hamiltonian error, giving up!");
-					return;
-				}
+			double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
+			System.err.printf("t:%.2f, H:%.9e, H0:%.9e, H-:%.9e, H+:%.9e, ER:%.1fdBh0%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dbValue);
+			if (dbValue > scenario.errorLimit) {
+				System.err.println("Hamiltonian error, giving up!");
+				return;
 			}
 			n += 1;
 		}
