@@ -132,9 +132,7 @@ public enum Integrator {
 	
 	/**
 	 * Perform one iteration step for the configured integrator
-	 * @param s the Symplectic instance
-	 * @param first the "outer" update
-	 * @param second the "middle" update
+	 * @param s the Symplectic object reference, for passing through to the Q & P update methods
 	 */
 	abstract void solve (Symplectic s);
 }
