@@ -1,16 +1,19 @@
 package uk.me.doitto.orbits;
 
+import static uk.me.doitto.orbits.Integrator.EULER;
+import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_10;
+import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_2;
 import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_4;
+import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_6;
+import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_8;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,20 +37,6 @@ public class Symplectic {
 	private final Integrator integrator;
 	
 	/**
-	 * For calling from Java code
-	 */
-	public Symplectic (Scenario ic, Integrator integrator) {
-		this.particles = ic.bodies;
-		this.np = ic.bodies.size();
-		this.g = ic.g;
-		this.timeStep = ic.ts;
-		this.errorLimit = ic.errorLimit;
-		this.outputInterval = (int) Math.round(OUTPUT_TIME_GRANULARITY / ic.ts);
-		this.iterations = ic.simulationTime / ic.ts;
-		this.integrator = integrator;
-	}
-	
-	/**
 	 * For calling from JSON data
 	 */
 	public Symplectic (double g, double simulationTime, double timeStep, double errorLimit, List<Particle> bodies, int integratorOrder) {
@@ -60,25 +49,25 @@ public class Symplectic {
 		this.iterations = simulationTime / timeStep;
 		switch (integratorOrder) {
 		case 1:
-			this.integrator = Integrator.EULER;
+			this.integrator = EULER;
 			break;
 		case 2:
-			this.integrator = Integrator.STORMER_VERLET_2;
+			this.integrator = STORMER_VERLET_2;
 			break;
 		case 4:
-			this.integrator = Integrator.STORMER_VERLET_4;
+			this.integrator = STORMER_VERLET_4;
 			break;
 		case 6:
-			this.integrator = Integrator.STORMER_VERLET_6;
+			this.integrator = STORMER_VERLET_6;
 			break;
 		case 8:
-			this.integrator = Integrator.STORMER_VERLET_8;
+			this.integrator = STORMER_VERLET_8;
 			break;
 		case 10:
-			this.integrator = Integrator.STORMER_VERLET_10;
+			this.integrator = STORMER_VERLET_10;
 			break;
 		default:
-			this.integrator = Integrator.STORMER_VERLET_4;
+			this.integrator = STORMER_VERLET_4;
 			break;
 		}
 	}
@@ -195,7 +184,7 @@ public class Symplectic {
 			if ((n % scenario.outputInterval) == 0) {
 				System.out.println(scenario.particlesJson());
 				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
-				System.err.printf("t:%.2f, H:%.9e, H0:%.9e, H-:%.9e, H+:%.9e, E:%.1e, ER:%.1fdBh0%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
+				System.err.printf("t:%.2f, H:%.9e, H0:%.9e, H-:%.9e, H+:%.9e, ER:%.1fdBh0%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dbValue);
 				if (dbValue > scenario.errorLimit) {
 					System.err.println("Hamiltonian error, giving up!");
 					return;
