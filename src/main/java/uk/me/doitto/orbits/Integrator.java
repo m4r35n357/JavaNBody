@@ -121,6 +121,8 @@ public enum Integrator {
 	
 	/**
 	 * Basic 2nd-order Stormer-Verlet step which is composed into higher order methods
+	 * @param s the Symplectic instance
+	 * @param c composition coefficient
 	 */
 	protected final void sympBase (Symplectic s, double c) {
 		s.updateQ(c * 0.5);

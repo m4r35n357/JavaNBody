@@ -104,6 +104,7 @@ public class Symplectic {
 	
 	/**
 	 * Position update implements dH/dp, which in this case is a function of p only
+	 * @param c composition coefficient
 	 */
 	void updateQ (double c) {
 		for (int i = 0; i < np; i++) {
@@ -117,6 +118,7 @@ public class Symplectic {
 	
 	/**
 	 * Momentum update implements -dH/dq, which in this case is a function of q only
+	 * @param c composition coefficient
 	 */
 	void updateP (double c) {
 		for (int i = 0; i < np; i++) {
@@ -160,6 +162,12 @@ public class Symplectic {
 		return (json + "]");
 	}
 	
+	/**
+	 * Read initial conditions from a JSON-formatted file
+	 * @param fileName the path to the file
+	 * @return a Symplectic instance
+	 */
+	@SuppressWarnings("unchecked")
 	public static Symplectic icJson (String fileName) throws IOException {
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(fileName)));
 		String data = "";
@@ -170,10 +178,8 @@ public class Symplectic {
 		}
 		bufferedReader.close();
 		JSONObject ic = (JSONObject)JSONValue.parse(data);
-		@SuppressWarnings("unchecked")
-		List<JSONObject> particles = (JSONArray)ic.get("bodies");
 		List<Particle> bodies = new ArrayList<Particle>();
-		for (JSONObject p : particles) {
+		for (JSONObject p : (List<JSONObject>)ic.get("bodies")) {
 			bodies.add(new Particle((Double)p.get("qX"), (Double)p.get("qY"), (Double)p.get("qZ"), (Double)p.get("pX"), (Double)p.get("pY"), (Double)p.get("pZ"), (Double)p.get("mass")));
 		}
 		return new Symplectic((Double)ic.get("g"), (Double)ic.get("simulationTime"), (Double)ic.get("timeStep"), (Double)ic.get("errorLimit"), bodies, ((Long)ic.get("integratorOrder")).intValue());
