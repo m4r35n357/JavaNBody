@@ -5,6 +5,7 @@ ic=${1:-''}
 d='data'
 p='progress'
 
+mvn clean package
 time java -jar target/orbits-0.0.1-SNAPSHOT-jar-with-dependencies.jar $ic >$d 2>$p &
 sleep 1
 ~/projects/Python/NBody3D/filegraphics.py $d $p

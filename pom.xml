@@ -172,7 +172,7 @@
 			  <configuration>
 			    <archive>
 			      <manifest>
-			        <mainClass>uk.me.doitto.orbits.Scenario</mainClass>
+			        <mainClass>uk.me.doitto.orbits.Symplectic</mainClass>
 			      </manifest>
 			    </archive>
 			    <descriptorRefs>

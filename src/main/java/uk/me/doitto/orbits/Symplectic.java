@@ -1,5 +1,7 @@
 package uk.me.doitto.orbits;
 
+import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_4;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -159,5 +161,47 @@ public class Symplectic {
 			bodies.add(new Particle((Double)p.get("qX"), (Double)p.get("qY"), (Double)p.get("qZ"), (Double)p.get("pX"), (Double)p.get("pY"), (Double)p.get("pZ"), (Double)p.get("mass")));
 		}
 		return new Symplectic((Double)ic.get("g"), (Double)ic.get("simulationTime"), (Double)ic.get("timeStep"), (Double)ic.get("errorLimit"), bodies, ((Long)ic.get("integratorOrder")).intValue());
+	}
+	
+	/**
+	 * Test method for symplectic integrators
+	 * 
+	 * @param args None defined
+	 * @throws IOException 
+	 * @throws Exception 
+	 */
+	public static void main (String[] args) throws IOException {
+		Symplectic scenario;
+		if (args.length == 1) {
+			scenario = Symplectic.icJson(args[0]);
+		} else {
+			System.err.println("Missing file name, giving up!");
+			return;
+		}
+		long n = 0;
+		double h0 = scenario.hamiltonian();
+		double hMin = h0;
+		double hMax = h0;
+		while (n <= scenario.iterations) {
+			scenario.solveQP();
+			double hNow = scenario.hamiltonian();
+			double tmp = Math.abs(hNow - h0);
+			double dH = tmp > 0.0 ? tmp : 1.0e-18;
+			if (hNow < hMin) {
+				hMin = hNow;
+			} else if (hNow > hMax) {
+				hMax = hNow;
+			}
+			if ((n % scenario.outputInterval) == 0) {
+				System.out.println(scenario.particlesJson());
+				double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
+				System.err.printf("t:%.2f, H:%.9e, H0:%.9e, H-:%.9e, H+:%.9e, E:%.1e, ER:%.1fdBh0%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dH, dbValue);
+				if (dbValue > scenario.errorLimit) {
+					System.err.println("Hamiltonian error, giving up!");
+					return;
+				}
+			}
+			n += 1;
+		}
 	}
 }
