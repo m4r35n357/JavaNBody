@@ -199,14 +199,14 @@ public class Symplectic {
 			System.err.println("Missing file name, giving up!");
 			return;
 		}
-		System.out.println(scenario.particlesJson());
-		long n = 0;
 		double h0 = scenario.hamiltonian();
 		double hMin = h0;
 		double hMax = h0;
+		System.out.println(scenario.particlesJson());
+		System.err.printf("{\"t\":%.2f, \"H\":%.9e, \"H0\":%.9e, \"H-\":%.9e, \"H+\":%.9e, \"ER\":%.1f}%n", 0.0, h0, h0, h0, h0, -999.9);
+		long n = 1;
 		while (n <= scenario.iterations) {
 			scenario.solve();
-			System.out.println(scenario.particlesJson());
 			double hNow = scenario.hamiltonian();
 			double tmp = Math.abs(hNow - h0);
 			double dH = tmp > 0.0 ? tmp : 1.0e-18;
@@ -216,9 +216,10 @@ public class Symplectic {
 				hMax = hNow;
 			}
 			double dbValue = 10.0 * Math.log10(Math.abs(dH / h0));
-			System.err.printf("t:%.2f, H:%.9e, H0:%.9e, H-:%.9e, H+:%.9e, ER:%.1fdBh0%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dbValue);
+			System.out.println(scenario.particlesJson());
+			System.err.printf("{\"t\":%.2f, \"H\":%.9e, \"H0\":%.9e, \"H-\":%.9e, \"H+\":%.9e, \"ER\":%.1f}%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dbValue);
 			if (dbValue > scenario.errorLimit) {
-				System.err.println("Hamiltonian error, giving up!");
+//				System.err.println("Hamiltonian error, giving up!");
 				return;
 			}
 			n += 1;
