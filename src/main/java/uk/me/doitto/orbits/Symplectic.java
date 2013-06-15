@@ -1,6 +1,5 @@
 package uk.me.doitto.orbits;
 
-//import static uk.me.doitto.orbits.Integrator.EULER;
 import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_10;
 import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_2;
 import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_4;
@@ -49,24 +48,25 @@ public class Symplectic {
 		this.iterations = simulationTime / timeStep;
 		switch (integratorOrder) {
 		case 2:
-			this.integrator = STORMER_VERLET_2;
+			integrator = STORMER_VERLET_2;
 			break;
 		case 4:
-			this.integrator = STORMER_VERLET_4;
+			integrator = STORMER_VERLET_4;
 			break;
 		case 6:
-			this.integrator = STORMER_VERLET_6;
+			integrator = STORMER_VERLET_6;
 			break;
 		case 8:
-			this.integrator = STORMER_VERLET_8;
+			integrator = STORMER_VERLET_8;
 			break;
 		case 10:
-			this.integrator = STORMER_VERLET_10;
+			integrator = STORMER_VERLET_10;
 			break;
 		default:
-			this.integrator = STORMER_VERLET_4;
+			integrator = STORMER_VERLET_4;
 			break;
 		}
+		integrator.init();
 	}
 
 	/**
@@ -196,7 +196,6 @@ public class Symplectic {
 		Symplectic scenario;
 		if (args.length == 1) {
 			scenario = Symplectic.icJson(args[0]);
-			scenario.integrator.init();
 		} else {
 			System.err.println("Missing file name, giving up!");
 			return;
@@ -221,7 +220,6 @@ public class Symplectic {
 			System.out.println(scenario.particlesJson());
 			System.err.printf("{\"t\":%.2f, \"H\":%.9e, \"H0\":%.9e, \"H-\":%.9e, \"H+\":%.9e, \"ER\":%.1f}%n", n * scenario.timeStep, hNow, h0, hMin, hMax, dbValue);
 			if (dbValue > scenario.errorLimit) {
-//				System.err.println("Hamiltonian error, giving up!");
 				return;
 			}
 			n += 1;
