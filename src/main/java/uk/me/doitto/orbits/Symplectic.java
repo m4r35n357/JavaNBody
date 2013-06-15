@@ -10,8 +10,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,8 +31,6 @@ public class Symplectic {
 	public final List<Particle> particles;
 	
 	private final Integrator integrator;
-	
-	static final MathContext P = MathContext.DECIMAL128;
 	
 	/**
 	 * For calling from JSON data
@@ -88,31 +84,31 @@ public class Symplectic {
 	 * @return the total energy
 	 */
 	public double hamiltonian () {
-		BigDecimal energy = new BigDecimal("0.0", P);
+		double energy = 0.0;
 		for (int i = 0; i < np; i++) {
 			Particle a = particles.get(i);
-			energy = energy.add(BigDecimal.valueOf(0.5 * (a.pX * a.pX + a.pY * a.pY + a.pZ * a.pZ)).divide(BigDecimal.valueOf(a.mass), P));
+			energy += (0.5 * (a.pX * a.pX + a.pY * a.pY + a.pZ * a.pZ)) / a.mass;
 			for (int j = 0; j < np; j++) {
 				if (i > j) {
 					Particle b = particles.get(j);
-					energy = energy.subtract(BigDecimal.valueOf(g * a.mass * b.mass).divide(BigDecimal.valueOf(distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ)), P));
+					energy -= (g * a.mass * b.mass) / (distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ));
 				}
 			}
 		}
-		return energy.doubleValue();
+		return energy;
 	}
 	
 	/**
 	 * Position update implements dH/dp, which in this case is a function of p only
 	 * @param c composition coefficient
 	 */
-	void updateQ (BigDecimal c) {
+	void updateQ (double c) {
 		for (int i = 0; i < np; i++) {
 			Particle a = particles.get(i);
-			BigDecimal tmp = BigDecimal.valueOf(timeStep / a.mass).multiply(c, P);
-			a.qX += BigDecimal.valueOf(a.pX).multiply(tmp, P).doubleValue();
-			a.qY += BigDecimal.valueOf(a.pY).multiply(tmp, P).doubleValue();
-			a.qZ += BigDecimal.valueOf(a.pZ).multiply(tmp, P).doubleValue();
+			double tmp = c * timeStep / a.mass;
+			a.qX += a.pX * tmp;
+			a.qY += a.pY * tmp;
+			a.qZ += a.pZ * tmp;
 		}
 	}
 	
@@ -120,16 +116,16 @@ public class Symplectic {
 	 * Momentum update implements -dH/dq, which in this case is a function of q only
 	 * @param c composition coefficient
 	 */
-	void updateP (BigDecimal c) {
+	void updateP (double c) {
 		for (int i = 0; i < np; i++) {
 			Particle a = particles.get(i);
 			for (int j = 0; j < np; j++) {
 				if (i > j) {
 					Particle b = particles.get(j);
-					BigDecimal tmp = BigDecimal.valueOf(- g * a.mass * b.mass * timeStep).multiply(c, P).divide(BigDecimal.valueOf(Math.pow(distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3)), P);
-					double dPx = BigDecimal.valueOf(b.qX - a.qX).multiply(tmp, P).doubleValue();
-					double dPy = BigDecimal.valueOf(b.qY - a.qY).multiply(tmp, P).doubleValue();
-					double dPz = BigDecimal.valueOf(b.qZ - a.qZ).multiply(tmp, P).doubleValue();
+					double tmp = - c * g * a.mass * b.mass * timeStep / Math.pow(distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3);
+					double dPx = (b.qX - a.qX) * tmp;
+					double dPy = (b.qY - a.qY) * tmp;
+					double dPz = (b.qZ - a.qZ) * tmp;
 					a.pX -= dPx;
 					a.pY -= dPy;
 					a.pZ -= dPz;
