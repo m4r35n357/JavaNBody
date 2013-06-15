@@ -11,6 +11,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +35,10 @@ public class Symplectic {
 	public final List<Particle> particles;
 	
 	private final Integrator integrator;
+	
+	private static final MathContext P2 = new MathContext(64, RoundingMode.HALF_EVEN);
+	
+	private static final MathContext P1 = MathContext.DECIMAL128;
 	
 	/**
 	 * For calling from JSON data
@@ -87,18 +94,30 @@ public class Symplectic {
 	 * @return the total energy
 	 */
 	public double hamiltonian () {
-		double energy = 0.0;
+//		double e = 0.0;
+//		for (int i = 0; i < np; i++) {
+//			Particle a = particles.get(i);
+//			e += 0.5 * (a.pX * a.pX + a.pY * a.pY + a.pZ * a.pZ) / a.mass;
+//			for (int j = 0; j < np; j++) {
+//				if (i > j) {
+//					Particle b = particles.get(j);
+//					e -= g * a.mass * b.mass / distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ);
+//				}
+//			}
+//		}
+//		return e;
+		BigDecimal energy = BigDecimal.valueOf(0.0);
 		for (int i = 0; i < np; i++) {
 			Particle a = particles.get(i);
-			energy += 0.5 * (a.pX * a.pX + a.pY * a.pY + a.pZ * a.pZ) / a.mass;
+			energy = energy.add(BigDecimal.valueOf(0.5 * (a.pX * a.pX + a.pY * a.pY + a.pZ * a.pZ)).divide(BigDecimal.valueOf(a.mass), P2));
 			for (int j = 0; j < np; j++) {
 				if (i > j) {
 					Particle b = particles.get(j);
-					energy -= g * a.mass * b.mass / distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ);
+					energy = energy.subtract(BigDecimal.valueOf(g * a.mass * b.mass).divide(BigDecimal.valueOf(distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ)), P2));
 				}
 			}
 		}
-		return energy;
+		return energy.doubleValue();
 	}
 	
 	/**
@@ -120,21 +139,39 @@ public class Symplectic {
 	 * @param c composition coefficient
 	 */
 	void updateP (double c) {
+//		for (int i = 0; i < np; i++) {
+//			Particle a = particles.get(i);
+//			for (int j = 0; j < np; j++) {
+//				if (i > j) {
+//					Particle b = particles.get(j);
+//					double tmp = - c * g * a.mass * b.mass / Math.pow(distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * timeStep;
+//					double dPx = (b.qX - a.qX) * tmp;
+//					double dPy = (b.qY - a.qY) * tmp;
+//					double dPz = (b.qZ - a.qZ) * tmp;
+//					a.pX -= dPx;
+//					a.pY -= dPy;
+//					a.pZ -= dPz;
+//					b.pX += dPx;
+//					b.pY += dPy;
+//					b.pZ += dPz;
+//				}
+//			}
+//		}
 		for (int i = 0; i < np; i++) {
 			Particle a = particles.get(i);
 			for (int j = 0; j < np; j++) {
 				if (i > j) {
 					Particle b = particles.get(j);
-					double tmp = - c * g * a.mass * b.mass / Math.pow(distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3) * timeStep;
-					double dPx = (b.qX - a.qX) * tmp;
-					double dPy = (b.qY - a.qY) * tmp;
-					double dPz = (b.qZ - a.qZ) * tmp;
-					a.pX -= dPx;
-					a.pY -= dPy;
-					a.pZ -= dPz;
-					b.pX += dPx;
-					b.pY += dPy;
-					b.pZ += dPz;
+					BigDecimal tmp = BigDecimal.valueOf(- c * g * a.mass * b.mass * timeStep).divide(BigDecimal.valueOf(Math.pow(distance(a.qX, a.qY, a.qZ, b.qX, b.qY, b.qZ), 3)), P2);
+					BigDecimal dPx = BigDecimal.valueOf(b.qX - a.qX).multiply(tmp, P2);
+					BigDecimal dPy = BigDecimal.valueOf(b.qY - a.qY).multiply(tmp, P2);
+					BigDecimal dPz = BigDecimal.valueOf(b.qZ - a.qZ).multiply(tmp, P2);
+					a.pX -= dPx.doubleValue();
+					a.pY -= dPy.doubleValue();
+					a.pZ -= dPz.doubleValue();
+					b.pX += dPx.doubleValue();
+					b.pY += dPy.doubleValue();
+					b.pZ += dPz.doubleValue();
 				}
 			}
 		}
