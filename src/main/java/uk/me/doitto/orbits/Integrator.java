@@ -9,19 +9,6 @@ import java.math.BigDecimal;
  */
 public enum Integrator {
 	/**
-	 * Euler 1st-order
-	 */
-//	EULER {
-//		@Override
-//		void init() {
-//		}
-//		@Override
-//		void solve (Symplectic s) {
-//			s.updateQ(BIG_ONE);
-//			s.updateP(BIG_ONE);
-//		}
-//	},
-	/**
 	 * Stormer-Verlet 2nd-order
 	 */
 	STORMER_VERLET_2 {
@@ -31,10 +18,6 @@ public enum Integrator {
 			coefficients[0] = new BigDecimal("1.0", Symplectic.P);
 			this.coefficients = coefficients;
 		}
-		@Override
-		void solve (Symplectic s) {
-			sympBase(s, coefficients[0]);
-		}
 	},
 	/**
 	 * Yoshida 4th-order
@@ -42,17 +25,12 @@ public enum Integrator {
 	STORMER_VERLET_4 {
 		@Override
 		void init() {
-			BigDecimal y = BIG_ONE.divide(BIG_TW0.subtract(CUBE_ROOT_2), Symplectic.P);
+			BigDecimal CUBE_ROOT_2 = BigDecimal.valueOf(Math.pow(2.0, 1.0 / 3.0));
+			BigDecimal y = new BigDecimal("1.0", Symplectic.P).divide(new BigDecimal("2.0", Symplectic.P).subtract(CUBE_ROOT_2), Symplectic.P);
 			BigDecimal[] coefficients = new BigDecimal[2];
-			coefficients[0] = BIG_ONE.divide(BIG_TW0.subtract(CUBE_ROOT_2), Symplectic.P);
+			coefficients[0] = y;
 			coefficients[1] = y.multiply(CUBE_ROOT_2, Symplectic.P).negate(Symplectic.P);
 			this.coefficients = coefficients;
-		}
-		@Override
-		void solve (Symplectic s) {
-			sympBase(s, coefficients[0]);
-			sympBase(s, coefficients[1]);
-			sympBase(s, coefficients[0]);
 		}
 	},
 	/**
@@ -67,16 +45,6 @@ public enum Integrator {
 			coefficients[2] = new BigDecimal("-1.17767998417887100694641568", Symplectic.P);
 			coefficients[3] = new BigDecimal("1.31518632068391121888424973", Symplectic.P);
 			this.coefficients = coefficients;
-		}
-		@Override
-		void solve (Symplectic s) {
-			sympBase(s, coefficients[0]);
-			sympBase(s, coefficients[1]);
-			sympBase(s, coefficients[2]);
-			sympBase(s, coefficients[3]);
-			sympBase(s, coefficients[2]);
-			sympBase(s, coefficients[1]);
-			sympBase(s, coefficients[0]);
 		}
 	},
 	/**
@@ -95,24 +63,6 @@ public enum Integrator {
 			coefficients[6] = new BigDecimal("0.31529309239676659663205666", Symplectic.P);
 			coefficients[7] = new BigDecimal("-0.79688793935291635401978884", Symplectic.P);
 			this.coefficients = coefficients;
-		}
-		@Override
-		void solve (Symplectic s) {
-			sympBase(s, coefficients[0]);
-			sympBase(s, coefficients[1]);
-			sympBase(s, coefficients[2]);
-			sympBase(s, coefficients[3]);
-			sympBase(s, coefficients[4]);
-			sympBase(s, coefficients[5]);
-			sympBase(s, coefficients[6]);
-			sympBase(s, coefficients[7]);
-			sympBase(s, coefficients[6]);
-			sympBase(s, coefficients[5]);
-			sympBase(s, coefficients[4]);
-			sympBase(s, coefficients[3]);
-			sympBase(s, coefficients[2]);
-			sympBase(s, coefficients[1]);
-			sympBase(s, coefficients[0]);
 		}
 	},
 	/**
@@ -141,56 +91,8 @@ public enum Integrator {
 			coefficients[16] = new BigDecimal("0.44373380805019087955111365", Symplectic.P);
 			this.coefficients = coefficients;
 		}
-		void solve (Symplectic s) {
-			int tmp = coefficients.length - 1;
-			for (int i = 0; i < tmp; i++) {
-				sympBase(s, coefficients[i]);
-			}
-			for (int i = tmp; i >= 0; i--) {
-				sympBase(s, coefficients[i]);
-			}
-//			sympBase(s, coefficients[0]);
-//			sympBase(s, coefficients[1]);
-//			sympBase(s, coefficients[2]);
-//			sympBase(s, coefficients[3]);
-//			sympBase(s, coefficients[4]);
-//			sympBase(s, coefficients[5]);
-//			sympBase(s, coefficients[6]);
-//			sympBase(s, coefficients[7]);
-//			sympBase(s, coefficients[8]);
-//			sympBase(s, coefficients[9]);
-//			sympBase(s, coefficients[10]);
-//			sympBase(s, coefficients[11]);
-//			sympBase(s, coefficients[12]);
-//			sympBase(s, coefficients[13]);
-//			sympBase(s, coefficients[14]);
-//			sympBase(s, coefficients[15]);
-//			sympBase(s, coefficients[16]);
-//			sympBase(s, coefficients[15]);
-//			sympBase(s, coefficients[14]);
-//			sympBase(s, coefficients[13]);
-//			sympBase(s, coefficients[12]);
-//			sympBase(s, coefficients[11]);
-//			sympBase(s, coefficients[10]);
-//			sympBase(s, coefficients[9]);
-//			sympBase(s, coefficients[8]);
-//			sympBase(s, coefficients[7]);
-//			sympBase(s, coefficients[6]);
-//			sympBase(s, coefficients[5]);
-//			sympBase(s, coefficients[4]);
-//			sympBase(s, coefficients[3]);
-//			sympBase(s, coefficients[2]);
-//			sympBase(s, coefficients[1]);
-//			sympBase(s, coefficients[0]);
-		}
 	};
 
-	private static final BigDecimal BIG_ONE = new BigDecimal("1.0", Symplectic.P);
-
-	private static final BigDecimal BIG_TW0 = new BigDecimal("2.0", Symplectic.P);
-
-	private static final BigDecimal CUBE_ROOT_2 = BigDecimal.valueOf(Math.pow(2.0, 1.0 / 3.0));
-	
 	protected BigDecimal[] coefficients;
 	
 	/**
@@ -205,11 +107,22 @@ public enum Integrator {
 		s.updateQ(halfY);
 	}
 	
+	/**
+	 * Set up the integrator composition coefficients
+	 */
 	abstract void init ();
 	
 	/**
 	 * Perform one iteration step for the configured integrator
 	 * @param s the Symplectic object reference, for passing through to the Q & P update methods
 	 */
-	abstract void solve (Symplectic s);
+	void solve (Symplectic s) {
+		int tmp = coefficients.length - 1;
+		for (int i = 0; i < tmp; i++) {
+			sympBase(s, coefficients[i]);
+		}
+		for (int i = tmp; i >= 0; i--) {
+			sympBase(s, coefficients[i]);
+		}
+	}
 }

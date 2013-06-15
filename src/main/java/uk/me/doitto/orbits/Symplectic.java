@@ -48,9 +48,6 @@ public class Symplectic {
 		this.errorLimit = errorLimit;
 		this.iterations = simulationTime / timeStep;
 		switch (integratorOrder) {
-//		case 1:
-//			this.integrator = EULER;
-//			break;
 		case 2:
 			this.integrator = STORMER_VERLET_2;
 			break;
