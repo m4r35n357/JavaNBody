@@ -1,6 +1,6 @@
 package uk.me.doitto.orbits;
 
-import static uk.me.doitto.orbits.Integrator.EULER;
+//import static uk.me.doitto.orbits.Integrator.EULER;
 import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_10;
 import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_2;
 import static uk.me.doitto.orbits.Integrator.STORMER_VERLET_4;
@@ -48,9 +48,9 @@ public class Symplectic {
 		this.errorLimit = errorLimit;
 		this.iterations = simulationTime / timeStep;
 		switch (integratorOrder) {
-		case 1:
-			this.integrator = EULER;
-			break;
+//		case 1:
+//			this.integrator = EULER;
+//			break;
 		case 2:
 			this.integrator = STORMER_VERLET_2;
 			break;
@@ -112,7 +112,7 @@ public class Symplectic {
 	void updateQ (BigDecimal c) {
 		for (int i = 0; i < np; i++) {
 			Particle a = particles.get(i);
-			BigDecimal tmp = BigDecimal.valueOf(timeStep).multiply(c, P).divide(BigDecimal.valueOf(a.mass), P);
+			BigDecimal tmp = BigDecimal.valueOf(timeStep / a.mass).multiply(c, P);
 			a.qX += BigDecimal.valueOf(a.pX).multiply(tmp, P).doubleValue();
 			a.qY += BigDecimal.valueOf(a.pY).multiply(tmp, P).doubleValue();
 			a.qZ += BigDecimal.valueOf(a.pZ).multiply(tmp, P).doubleValue();
@@ -199,6 +199,7 @@ public class Symplectic {
 		Symplectic scenario;
 		if (args.length == 1) {
 			scenario = Symplectic.icJson(args[0]);
+			scenario.integrator.init();
 		} else {
 			System.err.println("Missing file name, giving up!");
 			return;
