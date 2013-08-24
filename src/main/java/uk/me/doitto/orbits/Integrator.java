@@ -98,7 +98,7 @@ public enum Integrator {
 	 * @param s the Symplectic instance
 	 * @param c composition coefficient
 	 */
-	protected final void sympBase (Symplectic s, double y) {
+	protected final void sympBase (ISymplectic s, double y) {
 		double halfY = 0.5 * y;
 		s.updateQ(halfY);
 		s.updateP(y);
@@ -114,7 +114,7 @@ public enum Integrator {
 	 * Perform one iteration step for the configured integrator
 	 * @param s the Symplectic object reference, for passing through to the Q & P update methods
 	 */
-	void solve (Symplectic s) {
+	void solve (ISymplectic s) {
 		int tmp = coefficients.length - 1;
 		for (int i = 0; i < tmp; i++) {
 			sympBase(s, coefficients[i]);

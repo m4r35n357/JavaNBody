@@ -22,7 +22,7 @@ import org.json.simple.JSONValue;
  * <p>
  * Top level class for symplectic integrator simulations
  */
-public class Symplectic {
+public class Symplectic implements ISymplectic {
 	
 	public final double iterations, g, timeStep, errorLimit;
 	
@@ -102,7 +102,7 @@ public class Symplectic {
 	 * Position update implements dH/dp, which in this case is a function of p only
 	 * @param c composition coefficient
 	 */
-	void updateQ (double c) {
+	public void updateQ (double c) {
 		for (int i = 0; i < np; i++) {
 			Particle a = particles.get(i);
 			double tmp = c * timeStep / a.mass;
@@ -116,7 +116,7 @@ public class Symplectic {
 	 * Momentum update implements -dH/dq, which in this case is a function of q only
 	 * @param c composition coefficient
 	 */
-	void updateP (double c) {
+	public void updateP (double c) {
 		for (int i = 0; i < np; i++) {
 			Particle a = particles.get(i);
 			for (int j = 0; j < np; j++) {
